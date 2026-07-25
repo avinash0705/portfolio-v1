@@ -12,6 +12,21 @@ This is not a specification document — it's a working record kept during Phase
 
 ---
 
+## Milestones
+
+| Milestone | Reached at | Notes |
+|---|---|---|
+| **Phase 2A Complete** — core reusable UI foundation | commit `37d2500`, tag `phase-2a-complete` | Navigation, Section Heading, Highlight, Call to Action, and Metric / Evidence Block (numeric) implemented, each verified against `008` and `028`, each tracked through this log. The one genuine specification conflict encountered (item #2) was found and resolved *before* code existed, not discovered after. |
+
+**Remaining work is split into two tracks, not one undifferentiated backlog:**
+
+- **Track A — finish the component library.** Metric / Evidence Block's comparative and diagram/artifact variants, then Hero, Case Study Preview, Journal Preview, Experience Summary, Decision / Trade-off Block, and Contact Methods. Goal: **Component Library Complete** — every entry in `008-component-library.md` implemented and verified.
+- **Track B — page composition.** Deliberately not started until Track A finishes. Once every shared component exists, building the seven pages (`014`–`019`, `026`) is compositional — assembling already-verified pieces against each page's own spec — rather than creative, which keeps implementation risk low precisely because it comes last.
+
+**Planned, not yet started**: once Track A reaches Component Library Complete, a **Specification Coverage Review** — for every component, which specification sections govern it, which have been verified, which have automated verification versus manual review only. Distinct from code coverage; tracks whether the specifications themselves have been exercised, not whether lines of code executed.
+
+---
+
 ## Specification Clarifications Discovered During Implementation
 
 | # | Found during | Gap | Status |
