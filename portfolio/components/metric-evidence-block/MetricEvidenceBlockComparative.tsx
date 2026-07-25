@@ -1,3 +1,5 @@
+import { formatMetricValue } from "@/lib/formatMetricValue";
+
 type MetricPoint = {
   value: number;
   /** What state or period this value represents (e.g. "Before migration"),
@@ -14,10 +16,6 @@ type MetricEvidenceBlockComparativeProps = {
   /** Overall context: what this comparison measures. */
   context: string;
 };
-
-function formatValue(value: number, prefix?: string, suffix?: string): string {
-  return `${prefix ?? ""}${value.toLocaleString()}${suffix ?? ""}`;
-}
 
 /**
  * A computed delta, never an authored one — it can't be independently
@@ -40,7 +38,7 @@ function formatDelta(
     const relative = (Math.abs(diff) / Math.abs(before)) * 100;
     return `${sign}${relative.toLocaleString(undefined, { maximumFractionDigits: 1 })}%`;
   }
-  return `${sign}${formatValue(Math.abs(diff), prefix, suffix)}`;
+  return `${sign}${formatMetricValue(Math.abs(diff), prefix, suffix)}`;
 }
 
 /**
@@ -63,7 +61,7 @@ export function MetricEvidenceBlockComparative({
         <div>
           <dt className="text-sm text-muted">{before.label}</dt>
           <dd className="text-2xl leading-tight font-semibold tabular-nums text-foreground">
-            {formatValue(before.value, prefix, suffix)}
+            {formatMetricValue(before.value, prefix, suffix)}
           </dd>
         </div>
         <span aria-hidden="true" className="text-muted">
@@ -72,7 +70,7 @@ export function MetricEvidenceBlockComparative({
         <div>
           <dt className="text-sm text-muted">{after.label}</dt>
           <dd className="text-2xl leading-tight font-semibold tabular-nums text-foreground">
-            {formatValue(after.value, prefix, suffix)}
+            {formatMetricValue(after.value, prefix, suffix)}
           </dd>
         </div>
       </dl>

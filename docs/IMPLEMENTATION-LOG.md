@@ -27,6 +27,21 @@ This is not a specification document — it's a working record kept during Phase
 
 ---
 
+## Component Library Health Check (after Metric / Evidence Block completed all three variants)
+
+A deliberate pause before Hero, per the same discipline as the design-review pauses — not another spec review, an implementation-quality one. Answered against the real, accumulated source, not from memory:
+
+- **Single responsibility maintained across all six implemented pieces?** Yes, no drift found.
+- **Any API grown more complex than intended?** No — the discriminated-union / required-not-defaulted pattern has kept APIs narrower than a naive implementation would, not wider.
+- **Repeated pattern needing extraction?** Yes, found and fixed: a number-with-prefix/suffix formatter was duplicated near-identically in three files (`MetricEvidenceBlock.tsx`, `MetricEvidenceBlockComparative.tsx`, `AnimatedOverlay.tsx`) — a genuine third occurrence per `022-coding-standards.md`, Section 2's rule of three. Extracted to `lib/formatMetricValue.ts`; all three call sites updated; re-verified against real SSR output (both the numeric `40%` and the comparative `−52%` cases) that behavior is unchanged.
+- **A second candidate, deliberately left alone**: the house easing curve string appears in `NavList.tsx` (JS constant) and as inline Tailwind arbitrary values in `Highlight.tsx`/`CallToAction.tsx` — two occurrences in one mechanism, one in a different mechanism. Below the extraction threshold; watched, not fixed, on purpose.
+- **A disclosed, un-fixed inconsistency**: `AnimatedOverlay.tsx`'s JS-side interpolation uses a generic cubic ease-out as an approximation of the house `cubic-bezier(0.16, 1, 0.3, 1)` curve, not the exact curve (not cheaply expressible as a closed-form JS function). Visually negligible; not worth a real Bezier solver.
+- **Any ownership boundary forced to change?** No.
+- **Has the spec gap count changed?** No — still 1 open, 1 resolved, stable across both new variants.
+- **Becoming more compositional?** Yes, in idiom: the "invalid states unrepresentable" pattern now appears consistently across four different components, converged rather than reinvented each time.
+
+---
+
 ## Specification Clarifications Discovered During Implementation
 
 | # | Found during | Gap | Status |

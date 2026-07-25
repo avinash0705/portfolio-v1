@@ -1,3 +1,4 @@
+import { formatMetricValue } from "@/lib/formatMetricValue";
 import { AnimatedOverlay } from "./AnimatedOverlay";
 
 type MetricEvidenceBlockProps = {
@@ -15,13 +16,10 @@ type MetricEvidenceBlockProps = {
   label: string;
 };
 
-function format(value: number, prefix?: string, suffix?: string): string {
-  return `${prefix ?? ""}${value.toLocaleString()}${suffix ?? ""}`;
-}
-
 /**
- * 008-component-library.md, Section 8 (numeric variant only — comparative
- * and diagram/artifact variants are separate implementation passes).
+ * 008-component-library.md, Section 8 — numeric variant. See also
+ * MetricEvidenceBlockComparative and MetricEvidenceBlockDiagram in this
+ * same folder for the other two variants.
  *
  * The canonical value below is real, always-rendered text: present,
  * correct, and selectable regardless of JavaScript, CSS, or motion
@@ -39,7 +37,7 @@ export function MetricEvidenceBlock({
     <figure>
       <div className="relative inline-block">
         <p className="text-3xl leading-tight font-semibold tabular-nums text-foreground">
-          {format(value, prefix, suffix)}
+          {formatMetricValue(value, prefix, suffix)}
         </p>
         <AnimatedOverlay value={value} prefix={prefix} suffix={suffix} />
       </div>

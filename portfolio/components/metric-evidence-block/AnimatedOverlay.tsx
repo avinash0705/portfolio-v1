@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
+import { formatMetricValue } from "@/lib/formatMetricValue";
 
 // "Deliberate" tier and house easing curve (028-interaction-language.md,
 // Section 18). The eased() function below approximates the same
@@ -17,10 +18,6 @@ const LARGE_VALUE_BASELINE_RATIO = 0.85;
 
 function eased(progress: number): number {
   return 1 - Math.pow(1 - progress, 3);
-}
-
-function format(value: number, prefix?: string, suffix?: string): string {
-  return `${prefix ?? ""}${Math.round(value).toLocaleString()}${suffix ?? ""}`;
 }
 
 type AnimatedOverlayProps = {
@@ -76,7 +73,7 @@ export function AnimatedOverlay({
         function tick(now: number) {
           const progress = Math.min((now - startTime) / DURATION_MS, 1);
           const current = start + (value - start) * eased(progress);
-          setAnimatedText(format(current, prefix, suffix));
+          setAnimatedText(formatMetricValue(current, prefix, suffix));
 
           if (progress < 1) {
             requestAnimationFrame(tick);
