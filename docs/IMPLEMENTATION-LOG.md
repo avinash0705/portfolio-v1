@@ -26,7 +26,7 @@ This is not a specification document — it's a working record kept during Phase
 |---|:---:|:---:|:---:|:---:|
 | Navigation | ✅ | ✅ | ✅ | 0 (3 ambiguities resolved as implementation choices — see commit `6438e93`; none rose to a logged spec gap) |
 | Section Heading | ✅ | ✅ | ✅ | 1 (#1 above) |
-| Highlight | ⏳ | — | — | — |
+| Highlight | ✅ | ✅ | ✅ | 0 (type-level enforcement of link accessibility verified directly — see commit) |
 | Call to Action | ⏳ | — | — | — |
 | Metric / Evidence Block | ⏳ | — | — | — |
 | Hero | ⏳ | — | — | — |
