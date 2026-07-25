@@ -27,7 +27,7 @@ This is not a specification document — it's a working record kept during Phase
 | Navigation | ✅ | ✅ | ✅ | 0 (3 ambiguities resolved as implementation choices — see commit `6438e93`; none rose to a logged spec gap) |
 | Section Heading | ✅ | ✅ | ✅ | 1 (#1 above) |
 | Highlight | ✅ | ✅ | ✅ | 0 (type-level enforcement of link accessibility verified directly — see commit) |
-| Call to Action | ⏳ | — | — | — |
+| Call to Action | ✅ | ✅ | ✅ | 0 ("one primary per page" enforcement boundary noted — component design supports it, cannot mechanically enforce it; consistent with existing 008/013 split, not a gap) |
 | Metric / Evidence Block | ⏳ | — | — | — |
 | Hero | ⏳ | — | — | — |
 | Case Study Preview | ⏳ | — | — | — |
