@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { navItems } from "@/lib/nav-items";
-import { NavLink } from "./NavLink";
+import { NavList } from "./NavList";
 import { MobileNav } from "./MobileNav";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -20,14 +19,7 @@ export function Navigation() {
           Portfolio
         </Link>
 
-        <nav
-          aria-label="Primary"
-          className="hidden md:flex md:items-center md:gap-1"
-        >
-          {navItems.map((item) => (
-            <NavLink key={item.href} href={item.href} label={item.label} />
-          ))}
-        </nav>
+        <NavList />
 
         <div className="flex items-center gap-2">
           <div className="hidden md:block">
