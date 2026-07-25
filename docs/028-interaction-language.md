@@ -1,6 +1,6 @@
 # Interaction Language
 
-**Version:** 1.0
+**Version:** 1.1
 **Status:** Active
 
 ---
@@ -111,7 +111,15 @@ Per `010-accessibility.md`, Section 2's non-negotiable precedence, focus indicat
 
 ## 12. Metric Animations
 
-A genuine numeric metric inside a Metric / Evidence Block (`008-component-library.md`, Section 8) may count up from zero to its real value once, the first time it enters view, using Section 18's "deliberate" duration and easing. This is one of this system's few deliberate delight moments (Section 17), earned because it reinforces the evidentiary content rather than decorating it. It never re-triggers, and the correct final number is always present in the static markup regardless of whether the animation runs — per `009-motion-system.md`, Section 2, the number is information; the count-up is not.
+A genuine numeric metric inside a Metric / Evidence Block (`008-component-library.md`, Section 8) may animate once, the first time it enters view, using Section 18's "deliberate" duration and easing — but only as a decorative layer on top of a value that is always present, correct, selectable, and accessible.
+
+**The canonical evidence value is always present, correct, selectable, and accessible. Any animation is purely decorative and must never replace, modify, or temporarily obscure the canonical value.** This is what reconciles this section with Section 22's rule that a Metric / Evidence Block's actual content is never partially visible mid-animation: the evidence itself never changes or is obscured; at most, a separate, `aria-hidden` decorative representation animates alongside it.
+
+The animation strategy is implementation-defined — a count from zero, a fade between values, an odometer effect, or partial interpolation are all acceptable — provided it never changes the canonical value. It never re-triggers, per session, regardless of technique.
+
+**Extremely large values** (in the millions or billions, or values like "99.97%" where a full sweep from zero adds nothing) should not be animated end-to-end from a zero or near-zero baseline if doing so would run well past Section 18's duration ceiling or read as visual noise rather than reinforcement. Animation exists to reinforce perception, not to maximise duration — for such values, animating from a nearby baseline, animating only a portion of the value, or skipping animation entirely are all acceptable, under the same "motion serves information" standard as everywhere else in this document.
+
+This is one of this system's few deliberate delight moments (Section 17), earned because it reinforces the evidentiary content rather than decorating it — the correct final number is always present in the static markup regardless of whether any animation runs, per `009-motion-system.md`, Section 2: the number is information; the animation is not.
 
 ---
 
@@ -145,7 +153,7 @@ Because the site is static-first (`020-tech-stack.md`, Section 4), genuine loadi
 
 Delight is capped and earned, not sprinkled throughout. Three moments qualify, each tied directly to the site's evidentiary purpose rather than decoration:
 
-1. The metric count-up (Section 12).
+1. The metric's decorative first-view animation (Section 12).
 2. A precise copy-to-clipboard confirmation (Section 19) — an icon swap and a brief accent-coloured flash, never a toast notification competing for attention.
 3. The theme toggle's icon (sun/moon) morphs smoothly between states rather than swapping flatly (Section 5), at Section 18's "fast" duration.
 
@@ -162,7 +170,7 @@ This is where `009-motion-system.md`, Section 8's deferred numeric decision is r
 | Instant / feedback | 100–150ms | Button press, focus ring (Section 9), pressed states |
 | Fast | 120–180ms | Hover states, theme transition, icon morphs |
 | Standard | 200–300ms | Disclosure (mobile nav, Table of Contents), scroll-triggered reveal |
-| Deliberate | 400–600ms | Metric count-up, first-load image fade |
+| Deliberate | 400–600ms | Metric first-view animation, first-load image fade |
 
 **No interface animation ever exceeds 600ms.** Beyond that, motion starts to feel sluggish and risks violating `005-design-principles.md`'s rule that motion must never delay a visitor's ability to act.
 
@@ -206,11 +214,11 @@ None of the following are used, regardless of how well they might be executed:
 
 Distinct from Section 21's taste-driven exclusions, these are correctness rules — animating them risks misleading a visitor, not just looking undisciplined:
 
-- The settled value of a metric, once it has counted up (Section 12) — it never re-animates on repeat view.
+- The canonical value of a metric, once settled (Section 12) — it never re-animates on repeat view.
 - Body text reflow or line-height — text never visibly re-wraps as an animated effect.
 - Focus ring appearance (Section 9) — always instant.
 - Any content a visitor currently needs to read — an in-progress animation never overlaps or obscures text mid-transition.
-- A Decision / Trade-off Block's or Metric / Evidence Block's actual content (`008-component-library.md`, Sections 8–9) — evidence is never partially visible mid-animation in a way that could be misread.
+- A Decision / Trade-off Block's or Metric / Evidence Block's actual content (`008-component-library.md`, Sections 8–9) — evidence is never partially visible mid-animation in a way that could be misread. Section 12's metric animation satisfies this by construction: only a decorative overlay animates, never the canonical value itself.
 - Layout or geometry during a theme change (Section 14) — only colour transitions.
 
 ---
@@ -220,7 +228,8 @@ Distinct from Section 21's taste-driven exclusions, these are correctness rules 
 - [ ] Every duration used anywhere in the interface maps to one of the four tiers in Section 18 — nothing was chosen ad hoc.
 - [ ] The same easing curve is used everywhere motion decelerates; no interaction uses a different, one-off curve.
 - [ ] No hover or press state uses a scale or transform effect on a card, button, or image.
-- [ ] No element re-triggers a "first view" animation (metric count-up, scroll reveal) on a repeat view.
+- [ ] No element re-triggers a "first view" animation (metric animation, scroll reveal) on a repeat view.
+- [ ] Every metric's canonical value is present, correct, and selectable independent of whether any animation ran (Section 12).
 - [ ] Focus indication and pressed/touch states appear instantly, with no transition delay.
 - [ ] None of the excluded patterns in Section 21 appear anywhere in the implementation.
 - [ ] Delight moments are limited to the three named in Section 17 — no others have been added without revisiting this document.
