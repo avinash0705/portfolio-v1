@@ -29,7 +29,7 @@ This is not a specification document — it's a working record kept during Phase
 | Section Heading | ✅ | ✅ | ✅ | 1 (#1 above) |
 | Highlight | ✅ | ✅ | ✅ | 0 (type-level enforcement of link accessibility verified directly — see commit) |
 | Call to Action | ✅ | ✅ | ✅ | 0 ("one primary per page" enforcement boundary noted — component design supports it, cannot mechanically enforce it; consistent with existing 008/013 split, not a gap) |
-| Metric / Evidence Block | ⏳ | — | — | — |
+| Metric / Evidence Block (numeric variant only) | ✅ | ✅ | ✅ | 0 net (item #2 above surfaced and resolved during design review, before code) — canonical-value claim verified directly against real SSR output, not just code inspection. Comparative and diagram/artifact variants remain ⏳. |
 | Hero | ⏳ | — | — | — |
 | Case Study Preview | ⏳ | — | — | — |
 | Journal Preview | ⏳ | — | — | — |
