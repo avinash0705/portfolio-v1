@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+defaults:
+  run:
+    working-directory: portfolio
+
+jobs:
+  verify:
+    name: Verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: portfolio/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check (022-coding-standards.md, Section 3)
+        run: npm run typecheck
+
+      - name: Lint (020-tech-stack.md, Section 3)
+        run: npm run lint
+
+      - name: Format check (020-tech-stack.md, Section 3)
+        run: npm run format:check
+
+      - name: Build (020-tech-stack.md, Section 4 — static generation)
+        run: npm run build
+
+      # Later phases (025-roadmap.md) extend this pipeline per
+      # 024-deployment.md, Section 3, once there is real content and
+      # components to check against:
+      #   - Content validation (023-testing.md, Section 6)
+      #   - Unit and component tests (023-testing.md, Sections 4-5)
+      #   - Performance gate (023-testing.md, Section 8; 011-performance.md)
+      #   - Automated accessibility audit floor (023-testing.md, Section 7)
