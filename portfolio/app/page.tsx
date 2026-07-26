@@ -1,3 +1,4 @@
+import { Accessibility, Gauge, TrendingUp } from "lucide-react";
 import { Hero } from "@/components/hero/Hero";
 import { SectionHeading } from "@/components/section-heading/SectionHeading";
 import { Highlight } from "@/components/highlight/Highlight";
@@ -41,21 +42,25 @@ export default function Home() {
           name="Avinash"
           role="Lead Frontend Engineer"
           positioningStatement="Building products where performance, accessibility, and measurable outcomes matter."
+          supportingSentence="I craft fast, accessible, evidence-backed web experiences — never a claim this site can't back up."
           capabilities={[
             {
               label: "Performance",
               description:
                 "Core Web Vitals held within budget — 011-performance.md.",
+              icon: Gauge,
             },
             {
               label: "Accessibility",
               description:
                 "WCAG 2.2 AA conformance target — 010-accessibility.md.",
+              icon: Accessibility,
             },
             {
               label: "Impact",
               description:
                 "Every claim backed by a case study or a defensible metric.",
+              icon: TrendingUp,
             },
           ]}
         />
@@ -64,6 +69,10 @@ export default function Home() {
           id="highlights"
           className="border-t border-border py-20 lg:py-28"
         >
+          {/* No viewAllHref here, deliberately: 003-information-architecture.md
+              has no dedicated Highlights index page for this to point to —
+              008's amended Section 3 licenses the link only where a real
+              destination already exists. */}
           <SectionHeading title="Highlights" />
           <ul className="mt-8 grid gap-8 sm:grid-cols-3">
             <li>
@@ -90,7 +99,11 @@ export default function Home() {
           id="experience"
           className="border-t border-border py-20 lg:py-28"
         >
-          <SectionHeading title="Experience" />
+          <SectionHeading
+            title="Experience"
+            viewAllHref="/experience"
+            viewAllLabel="View full experience"
+          />
           <div className="mt-8">
             <ExperienceSummaryCondensed
               title="Lead Frontend Engineer"
@@ -104,7 +117,11 @@ export default function Home() {
           id="case-studies"
           className="border-t border-border py-20 lg:py-28"
         >
-          <SectionHeading title="Case Studies" />
+          <SectionHeading
+            title="Case Studies"
+            viewAllHref="/case-studies"
+            viewAllLabel="View all case studies"
+          />
           <ul className="mt-8 grid gap-8 sm:grid-cols-2">
             <li>
               <CaseStudyPreview
@@ -131,7 +148,11 @@ export default function Home() {
         </section>
 
         <section id="journal" className="border-t border-border py-20 lg:py-28">
-          <SectionHeading title="Journal" />
+          <SectionHeading
+            title="Journal"
+            viewAllHref="/journal"
+            viewAllLabel="View all journal entries"
+          />
           <ul className="mt-8 grid gap-8 sm:grid-cols-2">
             <li>
               <JournalPreview

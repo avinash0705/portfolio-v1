@@ -1,3 +1,6 @@
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+
 type SectionHeadingProps = {
   /** The label — fixed (Case Studies, AgentPrep) or authored (Homepage,
    * Resume, Contact) is a content-source distinction the caller resolves;
@@ -13,6 +16,17 @@ type SectionHeadingProps = {
    * AgentPrep) per 027-application-behaviour.md, Section 2. Omitted
    * elsewhere. */
   id?: string;
+  /** A single trailing link to a fuller version of this section's content
+   * elsewhere on the site (008-component-library.md, Section 3, as
+   * amended). Only licensed where that fuller destination genuinely
+   * exists in 003-information-architecture.md — the caller is responsible
+   * for that check; this component only renders what it's given. Both
+   * props are required together, or neither is provided. */
+  viewAllHref?: string;
+  /** States the actual destination (e.g. "View all case studies"), never
+   * a bare "View all" — the same name-precision rule Highlight's linked
+   * variant follows. */
+  viewAllLabel?: string;
 };
 
 /**
@@ -26,19 +40,34 @@ export function SectionHeading({
   description,
   level = 2,
   id,
+  viewAllHref,
+  viewAllLabel,
 }: SectionHeadingProps) {
   const Heading = level === 3 ? "h3" : "h2";
 
   return (
-    <div>
-      <Heading
-        id={id}
-        className="text-xl leading-tight font-semibold text-foreground md:text-2xl"
-      >
-        {title}
-      </Heading>
-      {description ? (
-        <p className="mt-1 text-sm leading-relaxed text-muted">{description}</p>
+    <div className="flex items-baseline justify-between gap-4">
+      <div>
+        <Heading
+          id={id}
+          className="text-xl leading-tight font-semibold text-foreground md:text-2xl"
+        >
+          {title}
+        </Heading>
+        {description ? (
+          <p className="mt-1 text-sm leading-relaxed text-muted">
+            {description}
+          </p>
+        ) : null}
+      </div>
+      {viewAllHref && viewAllLabel ? (
+        <Link
+          href={viewAllHref}
+          className="inline-flex shrink-0 items-center gap-1 text-sm text-accent hover:underline"
+        >
+          {viewAllLabel}
+          <ArrowRight aria-hidden="true" className="h-4 w-4" />
+        </Link>
       ) : null}
     </div>
   );

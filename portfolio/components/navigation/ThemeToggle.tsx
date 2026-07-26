@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Moon, Sun } from "lucide-react";
 
 // House easing curve, "fast" tier (028-interaction-language.md, Section 18) —
 // governs the icon morph, one of the system's three named delight moments
@@ -36,10 +37,8 @@ function readReducedMotionPreference(): boolean {
  * (previously on an inner text span) now that the visible difference is
  * an icon pair and an aria-label rather than text content.
  *
- * The sun/moon morph is a cross-fade + rotate between two stacked,
- * hand-drawn SVG icons — not a literal path morph — since no icon
- * library is used in this project (006-design-system.md, Section 9; the
- * same reasoning already applied to Contact Methods).
+ * The sun/moon morph is a cross-fade + rotate between two stacked Lucide
+ * icons (006-design-system.md, Section 9) — not a literal path morph.
  */
 export function ThemeToggle() {
   const [isDark, setIsDark] = useState(readInitialTheme);
@@ -63,14 +62,8 @@ export function ThemeToggle() {
       suppressHydrationWarning
       className="relative flex h-9 w-9 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-surface"
     >
-      <svg
+      <Sun
         aria-hidden="true"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
         className="absolute h-4 w-4"
         style={{
           opacity: isDark ? 0 : 1,
@@ -79,18 +72,9 @@ export function ThemeToggle() {
             : "rotate(0deg) scale(1)",
           transition,
         }}
-      >
-        <circle cx="12" cy="12" r="4" />
-        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-      </svg>
-      <svg
+      />
+      <Moon
         aria-hidden="true"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
         className="absolute h-4 w-4"
         style={{
           opacity: isDark ? 1 : 0,
@@ -99,9 +83,7 @@ export function ThemeToggle() {
             : "rotate(90deg) scale(0.5)",
           transition,
         }}
-      >
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" />
-      </svg>
+      />
     </button>
   );
 }

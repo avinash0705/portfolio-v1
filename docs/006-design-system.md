@@ -1,6 +1,6 @@
 # Design System Philosophy
 
-**Version:** 1.3
+**Version:** 1.4
 **Status:** Active
 
 ---
@@ -103,9 +103,9 @@ This is distinct from Section 2's container principle: elevation governs when so
 
 ## 9. Iconography
 
-A single icon style is used throughout — consistent stroke weight, consistent geometry, consistent visual density. Mixing icon styles (e.g. filled and outlined, or icons from multiple sets) is not permitted, as it breaks the system's consistency principle (`005-design-principles.md`, Section 1).
+A single icon set — Lucide, outline style only, at its default stroke weight — is used everywhere an icon appears. Mixing icon styles (e.g. filled and outlined, or icons from multiple sets) is not permitted, as it breaks the system's consistency principle (`005-design-principles.md`, Section 1). A hand-drawn SVG is permitted only where Lucide has no equivalent glyph the moment genuinely needs; it must still match Lucide's stroke weight and geometry, not introduce a visibly different hand.
 
-Icons support a text label; they do not replace one, especially in navigation — per accessibility and clarity rules already established, an icon alone is rarely sufficient to communicate meaning unambiguously. Icons are used sparingly and only where they add real scanning speed, never as decoration.
+Icons support a text label; they do not replace one, especially in navigation — per accessibility and clarity rules already established, an icon alone is rarely sufficient to communicate meaning unambiguously. Icons are used sparingly and only where they add real scanning speed, never as decoration. Choosing a single icon set does not obligate every component to use one — a component that already reads clearly as text alone (e.g. Contact Methods, `008-component-library.md`, Section 11) has no obligation to add icons just because a set now exists.
 
 ---
 

@@ -1,6 +1,6 @@
 # Component Library
 
-**Version:** 1.1
+**Version:** 1.2
 **Status:** Active
 
 ---
@@ -67,7 +67,7 @@ This is the single strongest defence against design-system sprawl available to a
 
 **Where it's used.** Homepage only. Granted the narrow exception (see Guardrail Principle) because Homepage's entire one-job is inseparable from this pattern — every other homepage section exists to build on what Hero establishes.
 
-**Content ownership.** Name, current role/level, a single positioning sentence, the primary/secondary CTA (`014-homepage.md`, Sections 4–5), and optionally a small, fixed capability-summary panel — 3–4 short value-proposition bullets restating the positioning statement's substance in scannable form. Every capability statement must be independently verifiable elsewhere in the portfolio (a performance budget, an accessibility conformance target, case study evidence) — never a claim with no corresponding evidence, per `000-philosophy.md`'s "Evidence Over Claims." It never contains a biography, a list of technologies, or narrative prose — that content is explicitly excluded from the homepage entirely.
+**Content ownership.** Name, current role/level, a single positioning sentence, optionally one supporting sentence directly beneath it, the primary/secondary CTA (`014-homepage.md`, Sections 4–5), and optionally a small, fixed capability-summary panel — 3–4 short value-proposition bullets restating the positioning statement's substance in scannable form. Every capability statement must be independently verifiable elsewhere in the portfolio (a performance budget, an accessibility conformance target, case study evidence) — never a claim with no corresponding evidence, per `000-philosophy.md`'s "Evidence Over Claims." The optional supporting sentence may only restate or extend the positioning statement's own claim in one line — it may never introduce a new claim the positioning statement doesn't already make, and it is capped at one sentence, the same way the positioning statement itself is. It never contains a biography, a list of technologies, or narrative prose — that content is explicitly excluded from the homepage entirely.
 
 **Variants.** None. There is exactly one Hero, because there is exactly one Homepage.
 
@@ -83,11 +83,11 @@ This is the single strongest defence against design-system sprawl available to a
 
 **Where it's used.** Every page: Homepage's six sections, each of Case Studies' ten fixed sections, each of AgentPrep's ten fixed sections, Journal's three-part entry skeleton, Resume's required sections, and Contact's sections.
 
-**Content ownership.** A short label (fixed, for Case Studies/AgentPrep's mandated section titles; freely written, for Homepage/Resume/Contact) plus, optionally, one short supporting line. It never contains the section's actual body content — that would blur heading and content into one element and break the scannability this component exists to provide.
+**Content ownership.** A short label (fixed, for Case Studies/AgentPrep's mandated section titles; freely written, for Homepage/Resume/Contact) plus, optionally, one short supporting line, plus optionally a single trailing link to a fuller version of the same section's content elsewhere on the site (e.g. "View all case studies," pointing to the Case Studies index). The trailing link may only be used where a fuller version genuinely exists as a real, already-documented destination in `003-information-architecture.md` — never added to imply a page or index that doesn't actually exist. It never contains the section's actual body content — that would blur heading and content into one element and break the scannability this component exists to provide.
 
 **Variants.** Fixed-title (used where `015-case-studies.md` or `016-agentprep.md` mandates an exact section name) versus authored-title (used where a page's copy determines the heading, e.g. Homepage). This is a content-source distinction, not a visual one.
 
-**Accessibility expectations.** Expressed as a real heading in the document's logical reading order, not a styled paragraph — screen-reader users rely on heading structure to navigate a long page (particularly Case Studies and AgentPrep) without reading linearly.
+**Accessibility expectations.** Expressed as a real heading in the document's logical reading order, not a styled paragraph — screen-reader users rely on heading structure to navigate a long page (particularly Case Studies and AgentPrep) without reading linearly. The optional trailing link's accessible name states its actual destination (e.g. "View all case studies"), never a bare "view all" — the same name-precision rule Highlight's linked variant already follows (Section 4).
 
 **Reasons not to create a new variant.** A page wanting a "more decorative" heading treatment is a Design System (`006-design-system.md`) concern, not a reason for a new component-level variant — the responsibility (introduce one section, one question) never changes.
 

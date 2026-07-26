@@ -1,3 +1,4 @@
+import type { LucideIcon } from "lucide-react";
 import { CallToAction } from "@/components/call-to-action/CallToAction";
 import { TechnicalMotif } from "@/components/decorative/TechnicalMotif";
 
@@ -8,6 +9,11 @@ type Capability = {
    * evidence) — never a generic claim with no corresponding evidence
    * (008-component-library.md, Section 2, as amended). */
   description: string;
+  /** Decorative only — the label and description already carry the
+   * meaning (006-design-system.md, Section 9: icons support a label,
+   * never replace one). The caller chooses the icon, keeping Hero itself
+   * icon-agnostic. */
+  icon: LucideIcon;
 };
 
 type HeroProps = {
@@ -18,11 +24,14 @@ type HeroProps = {
   /** The single sentence answering "who is this engineer?" directly —
    * never a slogan, never a technology list (014-homepage.md, Section 5). */
   positioningStatement: string;
+  /** One optional supporting sentence beneath the positioning statement
+   * (008-component-library.md, Section 2, as amended) — may only restate
+   * or extend the positioning statement's own claim, never introduce a
+   * new one, and is capped at one sentence. */
+  supportingSentence?: string;
   /** Optional capability-summary panel (008-component-library.md,
    * Section 2, as amended). 3–4 bullets restating the positioning
-   * statement's substance in scannable form. Text-only, deliberately: no
-   * icon library has been chosen for this project (006-design-system.md,
-   * Section 9; the same reasoning already applied in Contact Methods). */
+   * statement's substance in scannable form. */
   capabilities?: Capability[];
 };
 
@@ -52,11 +61,17 @@ type HeroProps = {
  * display serif licensed by 006-design-system.md, Section 4's third
  * typeface exception — never the role/name lines above it, which stay in
  * the one interface typeface everything else uses.
+ *
+ * Capability icons come from Lucide (006-design-system.md, Section 9, as
+ * amended) — the caller supplies the icon component per bullet, since
+ * matching a capability's meaning to a specific glyph is a content
+ * decision, not something Hero should hardcode.
  */
 export function Hero({
   name,
   role,
   positioningStatement,
+  supportingSentence,
   capabilities,
 }: HeroProps) {
   return (
@@ -71,6 +86,11 @@ export function Hero({
           <p className="mt-6 font-display text-4xl leading-[1.1] font-medium tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             {positioningStatement}
           </p>
+          {supportingSentence ? (
+            <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">
+              {supportingSentence}
+            </p>
+          ) : null}
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <CallToAction
               label="View Case Studies"
@@ -88,19 +108,30 @@ export function Hero({
         {capabilities && capabilities.length > 0 ? (
           <div className="rounded-lg border border-border bg-surface p-6">
             <ul className="flex flex-col divide-y divide-border">
-              {capabilities.map((capability) => (
-                <li
-                  key={capability.label}
-                  className="py-3 first:pt-0 last:pb-0"
-                >
-                  <p className="text-sm font-semibold text-foreground">
-                    {capability.label}
-                  </p>
-                  <p className="mt-1 text-sm text-muted">
-                    {capability.description}
-                  </p>
-                </li>
-              ))}
+              {capabilities.map((capability) => {
+                const Icon = capability.icon;
+                return (
+                  <li
+                    key={capability.label}
+                    className="flex items-start gap-3 py-3 first:pt-0 last:pb-0"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-accent/10 text-accent"
+                    >
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">
+                        {capability.label}
+                      </p>
+                      <p className="mt-1 text-sm text-muted">
+                        {capability.description}
+                      </p>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         ) : null}

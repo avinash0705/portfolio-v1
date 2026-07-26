@@ -13,10 +13,11 @@ const linkClassName =
  * variant, never a fourth channel added by this component itself
  * (019-contact.md, Section 4).
  *
- * Text-only labels: 006-design-system.md's iconography policy requires
- * any icon to be paired with a label, never icon-alone, but doesn't
- * mandate an icon exist — no icon library has been chosen for this
- * project, and adding one solely for this component isn't justified.
+ * Text-only labels: three short, self-explanatory link names already
+ * read clearly without icons, and 006-design-system.md, Section 9 is
+ * explicit that choosing an icon set elsewhere doesn't obligate every
+ * component to use one — adding icons here would be decoration, not the
+ * "real scanning speed" gain Section 9 requires.
  *
  * LinkedIn and GitHub open in a new tab and are marked as external
  * (027-application-behaviour.md, Section 4); Email is a mailto: action,
