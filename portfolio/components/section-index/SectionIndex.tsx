@@ -3,16 +3,11 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
 
-// House easing curve (028-interaction-language.md, Section 18).
+// House easing curve (028-interaction-language.md, Section 18). Governs
+// only the marker colour flip below — an instant-feeling state change,
+// not a spatial move.
 const EASING = "cubic-bezier(0.16, 1, 0.3, 1)";
-// Marker colour flip: an instant-feeling state change, not a spatial move.
 const COLOR_TRANSITION = `color 150ms ${EASING}, background-color 150ms ${EASING}, border-color 150ms ${EASING}`;
-// The active-zone cluster sliding between sections: a genuine spatial
-// move between two known positions, the same kind of transition as
-// Navigation's active-page indicator (NavList.tsx) — so it uses that
-// same "standard" tier, not the "fast" tier above.
-const ZONE_DURATION_MS = 200;
-const ZONE_TRANSITION = `top ${ZONE_DURATION_MS}ms ${EASING}, height ${ZONE_DURATION_MS}ms ${EASING}`;
 
 // Fixed column widths for the "01 — •" row (number / dash / dot), so the
 // active-zone cluster below can be positioned at a known horizontal
@@ -28,6 +23,11 @@ const RAIL_LEFT = NUMBER_COL + DASH_COL + DOT_COL / 2;
 // reference design, not the section's full height.
 const ZONE_INSET_RATIO = 0.1;
 const ZONE_HEIGHT_RATIO = 0.8;
+
+// Real, individually-positioned circular dots (h-1 w-1 = 4px, below),
+// spaced evenly through the cluster's height — a repeating CSS gradient
+// on a 1px-wide strip can only fake tick marks, never an actual circle.
+const CLUSTER_DOT_SPACING = 10;
 
 type SectionIndexProps = {
   /** Ordered ids of the page's fixed top-level sections
@@ -53,23 +53,29 @@ type Bounds = { top: number; height: number };
  *    present, one uniform colour, never changes.
  * 2. Per-section marker rows ("01 — •") — a number, a short dash, and a
  *    dot that fills once its section is reached.
- * 3. A moving dot cluster, the visible "you are here" — occupies the
- *    centre 80% of whichever section is currently active and slides to
- *    the next section's own 80% zone as the visitor scrolls into it.
+ * 3. A cluster of real circular dots, the visible "you are here" —
+ *    occupies the centre 80% of whichever section is currently active
+ *    and jumps to the next section's own 80% zone the instant a visitor
+ *    scrolls into it — an intentionally sudden reposition, not an eased
+ *    slide (confirmed directly against a reference: this is the one
+ *    element in this system that reads better as a discrete cut than a
+ *    continuous move).
  *
- * The cluster moves between two known positions (one section's zone to
- * the next's) — a discrete state change with a spatial animation, the
- * same shape as Navigation's active-page indicator, not a continuous
- * scroll-proportional fill. It advances only when a visitor crosses into
- * a new section; nothing here is proportional to how far a visitor has
- * scrolled within one (028-interaction-language.md, Section 5's
- * progress-through-structure, not reading-progress, distinction — the
- * cluster's *position* is discrete per-section even though its motion
- * between positions is animated).
+ * The cluster's position is still discrete per-section, never
+ * proportional to how far a visitor has scrolled within one
+ * (028-interaction-language.md, Section 5's progress-through-structure,
+ * not reading-progress, distinction) — only *how* it changes state
+ * (instantly, not eased) differs from Navigation's active-page
+ * indicator.
  *
- * Progress is measured against the page's actual section boundaries
- * (offsetTop/offsetHeight) — the same DOM-measurement technique already
- * used for Navigation's active-page indicator.
+ * Progress is measured against each section's real document position via
+ * `getBoundingClientRect()` (plus scroll offset), not `offsetTop` —
+ * `offsetTop` is relative to the nearest positioned ancestor, which
+ * silently breaks the moment any measured element sits inside its own
+ * `position: relative` wrapper (as Hero's does, for the technical
+ * motif's absolute background). `getBoundingClientRect()` always
+ * reflects true position on the page regardless of what's positioned
+ * in between.
  */
 export function SectionIndex({ sectionIds }: SectionIndexProps) {
   const [bounds, setBounds] = useState<Bounds[]>([]);
@@ -88,7 +94,9 @@ export function SectionIndex({ sectionIds }: SectionIndexProps) {
     function measure() {
       const next = sectionIds.map((id) => {
         const el = document.getElementById(id);
-        return el ? { top: el.offsetTop, height: el.offsetHeight } : null;
+        if (!el) return null;
+        const rect = el.getBoundingClientRect();
+        return { top: rect.top + window.scrollY, height: rect.height };
       });
       if (next.every((entry): entry is Bounds => entry !== null)) {
         setBounds(next);
@@ -147,6 +155,10 @@ export function SectionIndex({ sectionIds }: SectionIndexProps) {
   const zoneHeight = zoneEnd - zoneStart;
   const clusterTop = zoneStart + zoneHeight * ZONE_INSET_RATIO;
   const clusterHeight = zoneHeight * ZONE_HEIGHT_RATIO;
+  const clusterDotCount = Math.max(
+    Math.floor(clusterHeight / CLUSTER_DOT_SPACING) + 1,
+    1
+  );
 
   return (
     <div
@@ -197,22 +209,20 @@ export function SectionIndex({ sectionIds }: SectionIndexProps) {
         );
       })}
 
-      {/* 3. The moving "you are here" dot cluster — the centre 80% of
-          whichever section is currently active, sliding to the next
-          section's own 80% zone as the visitor scrolls into it. A
-          repeating gradient renders the "multiple dots" without needing
-          to compute how many discrete dot elements fit a given height. */}
-      <span
-        className="absolute w-px"
-        style={{
-          left: RAIL_LEFT,
-          top: clusterTop,
-          height: clusterHeight,
-          backgroundImage:
-            "repeating-linear-gradient(to bottom, var(--color-accent) 0, var(--color-accent) 2px, transparent 2px, transparent 6px)",
-          transition: reducedMotion ? "none" : ZONE_TRANSITION,
-        }}
-      />
+      {/* 3. The "you are here" dot cluster — real circular dots, evenly
+          spaced through the centre 80% of whichever section is
+          currently active. Repositions instantly the moment the active
+          section changes; deliberately not eased. */}
+      {Array.from({ length: clusterDotCount }, (_, i) => (
+        <span
+          key={i}
+          className="absolute h-1 w-1 -translate-x-1/2 rounded-full bg-accent"
+          style={{
+            left: RAIL_LEFT,
+            top: clusterTop + i * CLUSTER_DOT_SPACING,
+          }}
+        />
+      ))}
     </div>
   );
 }
