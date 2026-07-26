@@ -18,11 +18,12 @@ const DASH_COL = 16;
 const DOT_COL = 24;
 const RAIL_LEFT = NUMBER_COL + DASH_COL + DOT_COL / 2;
 
-// The active section's dot cluster covers the centre 80% of that
-// section's height on the rail (10% inset top and bottom) — per the
-// reference design, not the section's full height.
-const ZONE_INSET_RATIO = 0.1;
-const ZONE_HEIGHT_RATIO = 0.8;
+// The active section's dot cluster covers the centre 30% of that
+// section's height on the rail (35% inset top and bottom, symmetric so
+// it stays centred) — confirmed directly against a reference as a
+// smaller, more restrained zone than the original 80%.
+const ZONE_INSET_RATIO = 0.35;
+const ZONE_HEIGHT_RATIO = 0.3;
 
 // Real, individually-positioned circular dots (h-1 w-1 = 4px, below),
 // spaced evenly through the cluster's height — a repeating CSS gradient
@@ -61,13 +62,13 @@ type Bounds = { top: number; height: number };
  *    present, one uniform colour, never changes.
  * 2. Per-section marker rows ("01 — •") — a number, a short dash, and a
  *    dot that fills once its section is reached.
- * 3. A cluster of real circular dots, the visible "you are here" —
- *    occupies the centre 80% of whichever section is currently active
- *    and jumps to the next section's own 80% zone the instant a visitor
- *    scrolls into it — an intentionally sudden reposition, not an eased
- *    slide (confirmed directly against a reference: this is the one
- *    element in this system that reads better as a discrete cut than a
- *    continuous move).
+ * 3. A cluster of real circular dots (hollow, border only), the visible
+ *    "you are here" — occupies the centre 30% of whichever section is
+ *    currently active and jumps to the next section's own 30% zone the
+ *    instant a visitor scrolls into it — an intentionally sudden
+ *    reposition, not an eased slide (confirmed directly against a
+ *    reference: this is the one element in this system that reads
+ *    better as a discrete cut than a continuous move).
  *
  * The cluster's position is still discrete per-section, never
  * proportional to how far a visitor has scrolled within one
@@ -89,9 +90,27 @@ type Bounds = { top: number; height: number };
  * aligned top-to-top with it — a heading's own line-height is taller
  * than the short number/dash/dot row, so top-to-top alignment leaves the
  * marker visibly sitting above the heading rather than level with it.
+ *
+ * Every measured position is relative to this component's *own*
+ * container element (`railTop`, via `containerRef`), not to the first
+ * section's own position. Those are not the same reference point: this
+ * container renders as a normal flex sibling starting at the top of the
+ * row (level with Hero's `<section>`), while Hero's first real content
+ * line sits well below that, after Hero's own top padding. Using the
+ * first section's position as the zero-reference — as an earlier version
+ * of this component did — silently shifted every marker upward by
+ * exactly that padding, a bug no amount of per-marker offset tuning
+ * could fix, because the container itself was measuring from the wrong
+ * origin.
  */
 export function SectionIndex({ sectionIds }: SectionIndexProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  // Bounds are stored as absolute page positions (so the scroll-position
+  // comparison below stays in the same coordinate space as
+  // `window.scrollY`); `railTop` is subtracted from them only at render
+  // time, to place markers within the container's own local coordinates.
   const [bounds, setBounds] = useState<Bounds[]>([]);
+  const [railTop, setRailTop] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   // Lazy initializer, not effect-driven: reducedMotion is only read once
   // `bounds` is populated (client-only), so a server/client mismatch on
@@ -105,6 +124,14 @@ export function SectionIndex({ sectionIds }: SectionIndexProps) {
 
   useLayoutEffect(() => {
     function measure() {
+      const container = containerRef.current;
+      if (!container) return;
+      // The container's own position is the correct zero-reference —
+      // see the doc comment above for why the first section's position
+      // is not the same thing. Stored separately from `bounds`, which
+      // stay absolute.
+      setRailTop(container.getBoundingClientRect().top + window.scrollY);
+
       const next = sectionIds.map((id) => {
         const el = document.getElementById(id);
         if (!el) return null;
@@ -149,22 +176,28 @@ export function SectionIndex({ sectionIds }: SectionIndexProps) {
     };
   }, [bounds]);
 
-  if (bounds.length === 0) return null;
+  const hasBounds = bounds.length > 0;
 
-  const originTop = bounds[0].top;
-  const totalHeight =
-    bounds[bounds.length - 1].top +
-    bounds[bounds.length - 1].height -
-    originTop;
+  // The container itself must always render — even before `bounds` is
+  // populated — so `containerRef` exists for `measure()` to read on the
+  // very first pass. Only its children (markers, lines, cluster) wait on
+  // real measurements. Every position below subtracts `railTop`, moving
+  // from absolute page coordinates (what `bounds` stores, so the scroll
+  // comparison above stays correct) into the container's own local
+  // coordinates (what CSS `top` here needs).
+  const totalHeight = hasBounds
+    ? bounds[bounds.length - 1].top + bounds[bounds.length - 1].height - railTop
+    : 0;
 
   // The active section's "zone" runs from its own marker to the start of
   // the next section's (or, for the last section, to its own content's
   // end) — the same span its marker row already anchors to.
-  const zoneStart = bounds[currentIndex].top - originTop;
-  const zoneEnd =
-    (currentIndex + 1 < bounds.length
-      ? bounds[currentIndex + 1].top
-      : bounds[currentIndex].top + bounds[currentIndex].height) - originTop;
+  const zoneStart = hasBounds ? bounds[currentIndex].top - railTop : 0;
+  const zoneEnd = hasBounds
+    ? (currentIndex + 1 < bounds.length
+        ? bounds[currentIndex + 1].top
+        : bounds[currentIndex].top + bounds[currentIndex].height) - railTop
+    : 0;
   const zoneHeight = zoneEnd - zoneStart;
   const clusterTop = zoneStart + zoneHeight * ZONE_INSET_RATIO;
   const clusterHeight = zoneHeight * ZONE_HEIGHT_RATIO;
@@ -175,69 +208,84 @@ export function SectionIndex({ sectionIds }: SectionIndexProps) {
 
   return (
     <div
+      ref={containerRef}
       aria-hidden="true"
       className="relative hidden w-16 shrink-0 lg:block"
       style={{ height: totalHeight }}
     >
-      {/* 1. Base line — single, continuous, always present. */}
-      <span
-        className="absolute w-px bg-border"
-        style={{ left: RAIL_LEFT, top: 0, height: totalHeight }}
-      />
+      {hasBounds ? (
+        <>
+          {/* 1. Base line — single, continuous, always present. */}
+          <span
+            className="absolute w-px bg-border"
+            style={{ left: RAIL_LEFT, top: 0, height: totalHeight }}
+          />
 
-      {/* 2. Per-section marker rows: "01 — •". */}
-      {sectionIds.map((id, index) => {
-        const reached = index <= currentIndex;
-        const headingCenter =
-          bounds[index].top - originTop + bounds[index].height / 2;
-        const markerTop = headingCenter - MARKER_ROW_HEIGHT / 2;
+          {/* 2. Per-section marker rows: "01 — •". */}
+          {sectionIds.map((id, index) => {
+            const reached = index <= currentIndex;
+            const headingCenter =
+              bounds[index].top - railTop + bounds[index].height / 2;
+            const markerTop = headingCenter - MARKER_ROW_HEIGHT / 2;
 
-        return (
-          <div
-            key={id}
-            className="absolute left-0 grid items-center"
-            style={{
-              top: markerTop,
-              gridTemplateColumns: `${NUMBER_COL}px ${DASH_COL}px ${DOT_COL}px`,
-            }}
-          >
+            return (
+              <div
+                key={id}
+                className="absolute left-0 grid items-center"
+                style={{
+                  top: markerTop,
+                  gridTemplateColumns: `${NUMBER_COL}px ${DASH_COL}px ${DOT_COL}px`,
+                }}
+              >
+                <span
+                  className={cn(
+                    "text-xs tabular-nums",
+                    reached ? "text-foreground" : "text-muted"
+                  )}
+                  style={{
+                    transition: reducedMotion ? "none" : COLOR_TRANSITION,
+                  }}
+                >
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className="h-px w-2.5 justify-self-center bg-border" />
+                <span
+                  className={cn(
+                    "h-2 w-2 justify-self-center rounded-full border",
+                    reached
+                      ? "border-accent bg-accent"
+                      : "border-border bg-transparent"
+                  )}
+                  style={{
+                    transition: reducedMotion ? "none" : COLOR_TRANSITION,
+                  }}
+                />
+              </div>
+            );
+          })}
+
+          {/* 3. The "you are here" dot cluster — real circular dots,
+              hollow (border only, no fill), evenly spaced through the
+              centre 30% of whichever section is currently active.
+              Repositions instantly the moment the active section
+              changes; deliberately not eased. Neutral `foreground`, not
+              `accent` — confirmed directly against a reference: this
+              rail is a decorative, aria-hidden position indicator, not a
+              primary action, so it shouldn't compete with the one
+              accent colour 006-design-system.md, Section 3 reserves for
+              actual primary actions (the CTA buttons). */}
+          {Array.from({ length: clusterDotCount }, (_, i) => (
             <span
-              className={cn(
-                "text-xs tabular-nums",
-                reached ? "text-foreground" : "text-muted"
-              )}
-              style={{ transition: reducedMotion ? "none" : COLOR_TRANSITION }}
-            >
-              {String(index + 1).padStart(2, "0")}
-            </span>
-            <span className="h-px w-2.5 justify-self-center bg-border" />
-            <span
-              className={cn(
-                "h-2 w-2 justify-self-center rounded-full border",
-                reached
-                  ? "border-accent bg-accent"
-                  : "border-border bg-transparent"
-              )}
-              style={{ transition: reducedMotion ? "none" : COLOR_TRANSITION }}
+              key={i}
+              className="absolute h-1 w-1 -translate-x-1/2 rounded-full border border-foreground bg-transparent"
+              style={{
+                left: RAIL_LEFT,
+                top: clusterTop + i * CLUSTER_DOT_SPACING,
+              }}
             />
-          </div>
-        );
-      })}
-
-      {/* 3. The "you are here" dot cluster — real circular dots, evenly
-          spaced through the centre 80% of whichever section is
-          currently active. Repositions instantly the moment the active
-          section changes; deliberately not eased. */}
-      {Array.from({ length: clusterDotCount }, (_, i) => (
-        <span
-          key={i}
-          className="absolute h-1 w-1 -translate-x-1/2 rounded-full bg-accent"
-          style={{
-            left: RAIL_LEFT,
-            top: clusterTop + i * CLUSTER_DOT_SPACING,
-          }}
-        />
-      ))}
+          ))}
+        </>
+      ) : null}
     </div>
   );
 }
