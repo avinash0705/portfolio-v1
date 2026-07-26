@@ -25,6 +25,76 @@ This is not a specification document — it's a working record kept during Phase
 
 ---
 
+## Specification Coverage Review (run after Component Library Complete, before Track B)
+
+Not a new specification, and not a restatement of one — five questions, answered against the real repository state, checked directly rather than assumed. Two real, previously undisclosed findings came out of doing this properly (see Sections 4 and 5) — the review earned its place by finding something.
+
+### 1. Coverage — has each document from `000` onward actually influenced implementation?
+
+| Document | Status | Where / why not |
+|---|---|---|
+| `000-philosophy.md` | Direct, pervasive | Every restraint decision (no icon library, hand-rolled `cn()`/theme instead of a dependency, no marketing language) traces back to this. |
+| `001-vision.md` | Indirect | Shaped Hero's positioning-statement framing conceptually; not yet exercised against real content (Phase 3). |
+| `002-user-personas.md` | Indirect | Cited in accessibility/testing reasoning (`010`, `023`); no persona journey has been walked end-to-end yet since no real pages exist. |
+| `003-information-architecture.md` | Direct | Navigation's fixed six-item order (`lib/nav-items.ts`); link-discovered scoping for both previews. |
+| `004-product-goals.md` | Direct | Single-author/no-unnecessary-dependency reasoning cited in nearly every dependency decision — directly responsible for zero new npm packages across all 11 components. |
+| `005-design-principles.md` | Direct | Hierarchy, whitespace, and interaction rules implemented in every component. |
+| `006-design-system.md` | Direct | Tailwind tokens; the containers-are-the-exception amendment shaped every component's no-box treatment. |
+| `007-responsive-strategy.md` | Partial | Only Navigation's mobile disclosure exercises it; full page-level reflow untested — no pages exist yet. |
+| `008-component-library.md` | Direct | Central governing document; all 11 entries implemented. |
+| `009-motion-system.md` | Direct | Duration tiers and reduced-motion checks in `NavList`/`AnimatedOverlay`. |
+| `010-accessibility.md` | Direct | Accessible names, single-link-target rules, alt text, semantic structure in every component. |
+| `011-performance.md` | Partial | Zero-new-dependency and Server-Component-by-default discipline honored; Core Web Vitals/Lighthouse never actually measured against a real build. |
+| `012-seo.md` | Not yet | No metadata/structured data work has touched any component — correctly deferred to Track B/Phase 3. |
+| `013-content-strategy.md` | Not yet | Governs authored content, not component code — correctly untouched until real content exists. |
+| `014-homepage.md` | Direct | Hero's content ownership. |
+| `015-case-studies.md` | Direct | Metric/Evidence Block, Decision/Trade-off Block, Case Study Preview. |
+| `016-agentprep.md` | Direct (via shared components) | No AgentPrep-specific component built — `Product Timeline` correctly stays page-scoped, not promoted, per `008` itself. |
+| `017-journal.md` | Direct | Journal Preview's category taxonomy; Decision/Trade-off Block's Journal usage. |
+| `018-resume.md` | Direct | Experience Summary's full-tabular variant. |
+| `019-contact.md` | Direct | Contact Methods. |
+| `020-tech-stack.md` | Direct | Foundational — the entire Phase 1 scaffold. |
+| `021-folder-structure.md` | Direct | Component/content/lib folder structure. |
+| `022-coding-standards.md` | Direct, pervasive | Discriminated unions, rule-of-three, Server/Client discipline in every component. |
+| `023-testing.md` | Partial — see Section 4 | The most significant gap this review surfaced. |
+| `024-deployment.md` | Partial | CI has typecheck/lint/format/build; the fuller gate pipeline (content validation, performance, accessibility) explicitly deferred, as disclosed in the CI workflow's own comments since Phase 1. |
+| `025-roadmap.md` | Direct | Literally the executed plan. |
+| `026-experience.md` | Direct | Experience Summary's narrative variant. |
+| `027-application-behaviour.md` | Partial | Theme system, external link handling, 404 page implemented; reading behaviors (TOC, reading progress) untested — no long-form pages exist yet. |
+| `028-interaction-language.md` | Partial — see Section 5 | Durations/easing/spatial continuity implemented; two of three delight moments not yet built. |
+
+### 2. Ownership — did implementation ever require changing a component's content ownership?
+
+**No.** Re-checked every component's final prop shape against `008`'s original content-ownership language for it. Additions like Section Heading's `id` or Experience Summary's `evolutionNote` are technical/rendering capability added *within* already-stated ownership, not new categories of content a component now owns. No component ended up owning more, less, or different content than `008` originally specified for it.
+
+### 3. Reuse
+
+- **Reused directly (component-in-component)**: `CallToAction` (by Hero), `Highlight` (by Experience Summary).
+- **Reused as pattern, not code**: discriminated unions for variant safety; closed literal unions for fixed value sets (`JournalCategory`); configurable heading-level props; no-container styling everywhere; hover-colour-shift for block-level preview links (Case Study Preview, Journal Preview); underline-draw for inline prose links (Highlight, Contact Methods) — both CSS patterns sitting at exactly 2 occurrences, never forced to a third.
+- **Deliberately not reused**: Section Heading declined by Case Study Preview; the two previews declined sharing code with each other; Metric/Evidence Block's three variants stayed separate rather than merging into one.
+
+### 4. Verification — the most important finding in this review
+
+- **Automated, in CI, every commit**: typecheck, lint, format, build.
+- **Real, but manual and *not preserved***: every SSR/markup correctness check (throwaway routes + `curl`), every `@ts-expect-error` confirmation across all 11 components — genuinely run, genuinely passed, **none committed as a re-runnable test file**. This is the single most important thing this review surfaced: rigor at time-of-writing has not been converted into regression protection. A future change to, say, `Highlight`'s discriminated union could silently break tomorrow without anything in this repository catching it — every check this project has relied on so far only proved the code was correct *at the moment it was written*.
+- **Not yet verifiable**: visual/interaction appearance (no browser available throughout this project); real accessibility testing (keyboard-only and screen-reader passes per persona journey, per `010`'s own testing philosophy — never actually performed); Core Web Vitals/Lighthouse against a real build; responsive reflow at real page scale.
+
+### 5. Outstanding Items (deliberately deferred, not bugs)
+
+1. **`ThemeToggle` uses a text-label swap ("Light mode"/"Dark mode"), not the icon morph `028`'s Delight Moment #3 specifies.** Checked the actual file rather than assuming compliance — this is a real, previously undisclosed gap between spec and implementation, surfaced only by this review.
+2. Copy-to-clipboard confirmation (`028`'s Delight Moment #2) — not built; no code blocks exist yet to attach it to.
+3. In-page zoom overlay for diagram evidence — explicitly deferred at build time (progressive-enhancement baseline only), already disclosed in that commit.
+4. Mobile navigation's disclosure panel has no sliding continuity indicator — a scoped decision from Navigation's original implementation.
+5. **No automated test suite exists anywhere in the repository** — see Section 4.
+6. `023`'s fuller testing pyramid (component tests, e2e persona journeys, automated content validation) — not implemented; only the base CI gates exist.
+7. `024`'s fuller deployment pipeline (performance/accessibility automated gates) — not implemented, disclosed in the CI workflow's own comments since Phase 1.
+8. `007`, `011`, `027`'s remaining behaviors (full responsive reflow, Core Web Vitals, reading progress/TOC) — untested, since no full pages exist yet to exercise them.
+9. `012`/`013` (SEO, content strategy) — entirely unexercised, correctly deferred until Track B/Phase 3.
+
+**Summary**: coverage and ownership held exactly as hoped — no document was ignored without a reason, and no component's boundaries had to move. The reuse result matches what emerged organically across Track A: real reuse where responsibility matched, real refusal where it didn't. The one place this review earned its keep is Section 4 — the gap between "verified" and "verified and protected going forward" was real, and items #1 and #5 in Section 5 were not previously known before this review checked the actual files rather than trusting prior summaries.
+
+---
+
 ## Component Library Health Check (after Metric / Evidence Block completed all three variants)
 
 A deliberate pause before Hero, per the same discipline as the design-review pauses — not another spec review, an implementation-quality one. Answered against the real, accumulated source, not from memory:
