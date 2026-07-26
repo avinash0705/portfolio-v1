@@ -83,12 +83,12 @@ export default function Home() {
           ]}
         />
 
-        <section className="border-t border-border py-20 lg:py-28">
+        <section className="pb-20 lg:pb-28">
           {/* No viewAllHref here, deliberately: 003-information-architecture.md
               has no dedicated Highlights index page for this to point to —
               008's amended Section 3 licenses the link only where a real
               destination already exists. */}
-          <SectionHeading id="highlights" title="Highlights" indexMark />
+          <SectionHeading id="highlights" title="Highlights" divider />
           <ul className="mt-8 grid gap-8 sm:grid-cols-3">
             <li>
               <Highlight
@@ -110,13 +110,13 @@ export default function Home() {
           </ul>
         </section>
 
-        <section className="border-t border-border py-20 lg:py-28">
+        <section className="pb-20 lg:pb-28">
           <SectionHeading
             id="experience"
             title="Experience"
             viewAllHref="/experience"
             viewAllLabel="View full experience"
-            indexMark
+            divider
           />
           <div className="mt-8">
             <ExperienceSummaryCondensed
@@ -127,13 +127,13 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="border-t border-border py-20 lg:py-28">
+        <section className="pb-20 lg:pb-28">
           <SectionHeading
             id="case-studies"
             title="Case Studies"
             viewAllHref="/case-studies"
             viewAllLabel="View all case studies"
-            indexMark
+            divider
           />
           <ul className="mt-8 grid gap-8 sm:grid-cols-2">
             <li>
@@ -160,13 +160,13 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="border-t border-border py-20 lg:py-28">
+        <section className="pb-20 lg:pb-28">
           <SectionHeading
             id="journal"
             title="Journal"
             viewAllHref="/journal"
             viewAllLabel="View all journal entries"
-            indexMark
+            divider
           />
           <ul className="mt-8 grid gap-8 sm:grid-cols-2">
             <li>
@@ -186,8 +186,8 @@ export default function Home() {
           </ul>
         </section>
 
-        <section className="border-t border-border py-20 lg:py-28">
-          <SectionHeading id="contact" title="Contact" indexMark />
+        <section className="pb-20 lg:pb-28">
+          <SectionHeading id="contact" title="Contact" divider />
           <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted">
             If something here resonates with your work, I&apos;d be glad to hear
             from you.

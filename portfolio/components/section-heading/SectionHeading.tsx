@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { cn } from "@/lib/cn";
 
 type SectionHeadingProps = {
   /** The label — fixed (Case Studies, AgentPrep) or authored (Homepage,
@@ -31,12 +32,13 @@ type SectionHeadingProps = {
    * a bare "View all" — the same name-precision rule Highlight's linked
    * variant follows. */
   viewAllLabel?: string;
-  /** Renders a short, `aria-hidden` decorative dash after the title,
-   * mirroring the dash in Section Index's own marker row (`01 —`) on
-   * pages that use it. Purely visual pairing — never enabled on a page
-   * without Section Index, where an orphaned dash would have nothing to
-   * visually pair with. */
-  indexMark?: boolean;
+  /** Renders the title bisected by a continuous horizontal rule that
+   * starts right after it and fills the remaining width (up to the
+   * `viewAllHref` link, if present) — the section's own top divider,
+   * replacing a separate full-width line above the heading. Only used on
+   * pages that compose their own section dividers this way (the
+   * Homepage); never a page-wide default. */
+  divider?: boolean;
 };
 
 /**
@@ -44,6 +46,12 @@ type SectionHeadingProps = {
  * of its own (028-interaction-language.md, Section 7 scopes scroll-reveal
  * to specific page types this shared atom can't assume) and no client-side
  * JavaScript cost (011-performance.md, Section 9).
+ *
+ * `divider`'s bisecting line is a flex row with the title, a `flex-1`
+ * rule, and (if present) the `viewAllHref` link — `items-center`
+ * vertically centres the 1px line on the title's own text, which is
+ * what makes it read as bisecting the title rather than sitting below
+ * or above it.
  */
 export function SectionHeading({
   title,
@@ -52,38 +60,39 @@ export function SectionHeading({
   id,
   viewAllHref,
   viewAllLabel,
-  indexMark,
+  divider,
 }: SectionHeadingProps) {
   const Heading = level === 3 ? "h3" : "h2";
 
   return (
-    <div className="flex items-baseline justify-between gap-4">
-      <div>
+    <div>
+      <div
+        className={cn(
+          "flex gap-4",
+          divider ? "items-center" : "items-baseline justify-between"
+        )}
+      >
         <Heading
           id={id}
-          className="text-xl leading-tight font-semibold text-foreground md:text-2xl"
+          className="shrink-0 text-xl leading-tight font-semibold text-foreground md:text-2xl"
         >
           {title}
-          {indexMark ? (
-            <span aria-hidden="true" className="ml-3 text-muted">
-              —
-            </span>
-          ) : null}
         </Heading>
-        {description ? (
-          <p className="mt-1 text-sm leading-relaxed text-muted">
-            {description}
-          </p>
+        {divider ? (
+          <span aria-hidden="true" className="h-px min-w-8 flex-1 bg-border" />
+        ) : null}
+        {viewAllHref && viewAllLabel ? (
+          <Link
+            href={viewAllHref}
+            className="inline-flex shrink-0 items-center gap-1 text-sm text-accent hover:underline"
+          >
+            {viewAllLabel}
+            <ArrowRight aria-hidden="true" className="h-4 w-4" />
+          </Link>
         ) : null}
       </div>
-      {viewAllHref && viewAllLabel ? (
-        <Link
-          href={viewAllHref}
-          className="inline-flex shrink-0 items-center gap-1 text-sm text-accent hover:underline"
-        >
-          {viewAllLabel}
-          <ArrowRight aria-hidden="true" className="h-4 w-4" />
-        </Link>
+      {description ? (
+        <p className="mt-1 text-sm leading-relaxed text-muted">{description}</p>
       ) : null}
     </div>
   );
