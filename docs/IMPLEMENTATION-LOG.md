@@ -66,10 +66,10 @@ A deliberate pause before Hero, per the same discipline as the design-review pau
 | Case Study Preview | ⏳ | — | — | — |
 | Journal Preview | ⏳ | — | — | — |
 | Experience Summary | ⏳ | — | — | — |
-| Decision / Trade-off Block | ⏳ | — | — | — |
+| Decision / Trade-off Block | ✅ | ✅ | ✅ | 0 — one component with a discriminated union (not two separate files, unlike Metric/Evidence Block's genuinely different variants), since decision and trade-off share identical rendering shape per 008's own "share the same content-ownership rule." Mandatory counter-statement and mixed-kind rejection both verified via @ts-expect-error; no-container compliance verified against real SSR output. |
 | Contact Methods | ⏳ | — | — | — |
 
-Order follows the sequence agreed in conversation, not `008-component-library.md`'s own listing order: Navigation → Section Heading → Highlight → Call to Action → Metric / Evidence Block (given deliberate extra attention, per its centrality to "Evidence Over Claims") → remaining components.
+Order follows the sequence agreed in conversation, not `008-component-library.md`'s own listing order: Navigation → Section Heading → Highlight → Call to Action → Metric / Evidence Block (given deliberate extra attention, per its centrality to "Evidence Over Claims") → Hero → **Decision / Trade-off Block → Experience Summary → Contact Methods → Case Study Preview → Journal Preview** (re-sequenced to keep delaying page-shaped components until last).
 
 ---
 
@@ -89,8 +89,9 @@ Tracked from Navigation onward, backfilled accurately against the real commit hi
 | *(health check)* Formatter extraction | 0 | 1 (`formatMetricValue`) | — (this is the reuse-creation event itself) | 0 |
 | **006 containers amendment** | 1 (proactive addition, not a discovered gap — see note below) | 0 | — | 0 |
 | Hero | 0 | 1 | 1 (`CallToAction`) — first genuine cross-*component* reuse beyond the `cn()` utility | 0 |
+| Decision / Trade-off Block | 0 | 1 (one component, two variants via discriminated union) | 0 | 0 |
 
-**Running totals through Hero**: 2 specification changes across 8 components + 1 refactor + 1 proactive amendment; 0 new npm dependencies added at any point; abstraction reuse climbing as intended — `cn()` twice, and Hero is the first case of one *component* reusing another (`CallToAction`) rather than only sharing a small utility. Exactly the trend this metric was added to surface.
+**Running totals through Decision / Trade-off Block**: 2 specification changes across 9 components + 1 refactor + 1 proactive amendment; 0 new npm dependencies added at any point; abstraction reuse present at `cn()` (x2) and `CallToAction` (x1) — Decision/Trade-off Block didn't reuse an existing abstraction itself, but its choice to be one component instead of two is itself a form of avoiding unnecessary proliferation.
 
 **A note on the 006 amendment's category**: unlike items #1 and #2 below, this wasn't a gap *discovered* during implementation — it was a design direction proposed directly by the project owner (containers-are-the-exception, editorial layout over card-based dashboard layout) and resolved into `006-design-system.md` before Hero, following the same "resolve real behavior-changing decisions immediately, don't batch them" rule already established for item #2. Recorded here for the metric's sake, not folded into the gaps table below, since it isn't a specification defect.
 
@@ -102,7 +103,7 @@ A single always-current rollup, distinct from the growing per-component table ab
 
 | Metric | Value |
 |---|---:|
-| Components implemented | 6 / 11 (Navigation, Hero, Section Heading, Highlight, Call to Action, Metric / Evidence Block) |
+| Components implemented | 7 / 11 (Navigation, Hero, Section Heading, Highlight, Call to Action, Metric / Evidence Block, Decision / Trade-off Block) |
 | Components reused by another component | 1 (`CallToAction`, reused by Hero) |
 | Shared utilities | 2 (`cn()`, `formatMetricValue`) |
 | New dependencies introduced | 0 |
