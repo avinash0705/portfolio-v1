@@ -29,6 +29,14 @@ const ZONE_HEIGHT_RATIO = 0.8;
 // on a 1px-wide strip can only fake tick marks, never an actual circle.
 const CLUSTER_DOT_SPACING = 10;
 
+// The marker row's own rendered height (its tallest child is the
+// text-xs number, ~16px line-height) — needed to align the row's
+// vertical *centre* with its heading's centre, not its top with the
+// heading's top. A heading's own line-height is taller than this short
+// row, so top-to-top alignment leaves the marker visibly sitting above
+// the heading's centre rather than level with it.
+const MARKER_ROW_HEIGHT = 16;
+
 type SectionIndexProps = {
   /** Ordered ids of the page's fixed top-level sections
    * (008-component-library.md, Section 12). Each id must match a real
@@ -76,6 +84,11 @@ type Bounds = { top: number; height: number };
  * motif's absolute background). `getBoundingClientRect()` always
  * reflects true position on the page regardless of what's positioned
  * in between.
+ *
+ * Each marker row is centred on its heading's vertical centre, not
+ * aligned top-to-top with it — a heading's own line-height is taller
+ * than the short number/dash/dot row, so top-to-top alignment leaves the
+ * marker visibly sitting above the heading rather than level with it.
  */
 export function SectionIndex({ sectionIds }: SectionIndexProps) {
   const [bounds, setBounds] = useState<Bounds[]>([]);
@@ -175,7 +188,9 @@ export function SectionIndex({ sectionIds }: SectionIndexProps) {
       {/* 2. Per-section marker rows: "01 — •". */}
       {sectionIds.map((id, index) => {
         const reached = index <= currentIndex;
-        const markerTop = bounds[index].top - originTop;
+        const headingCenter =
+          bounds[index].top - originTop + bounds[index].height / 2;
+        const markerTop = headingCenter - MARKER_ROW_HEIGHT / 2;
 
         return (
           <div
