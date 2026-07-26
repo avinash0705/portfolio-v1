@@ -3,6 +3,7 @@ import Link from "next/link";
 import { cn } from "@/lib/cn";
 import { CallToAction } from "@/components/call-to-action/CallToAction";
 import { TechnicalMotif } from "@/components/decorative/TechnicalMotif";
+import { QuickLinksMotif } from "@/components/decorative/QuickLinksMotif";
 
 type QuickLink = {
   label: string;
@@ -43,13 +44,14 @@ type HeroProps = {
 /**
  * 008-component-library.md, Section 2 — the one component exempted from
  * the two-page guardrail, because Homepage's entire one-job is
- * inseparable from it. No container for the primary content
+ * inseparable from it. No container anywhere in Hero
  * (006-design-system.md, Section 2, as amended): typography and
- * whitespace only. The quick-links panel needs no named container
- * exception of its own — each tile is an interactive control (a real
- * link), already covered by Section 2's existing "interactive controls
- * are not subject to this rule" carve-out, the same reasoning
- * Call to Action's own visible boundary rests on.
+ * whitespace only. The quick-links grid has no outer boundary either —
+ * confirmed directly against a reference — only the internal cross
+ * (one vertical, one horizontal divider) separating the four tiles;
+ * each tile's own click target is a real link, already covered by
+ * Section 2's "interactive controls are not subject to this rule"
+ * carve-out, but the grid as a whole is never boxed.
  *
  * The quick-links panel is deliberately styled subordinate to the
  * primary/secondary CTA above it (muted icon tint, no accent fill,
@@ -85,6 +87,13 @@ type HeroProps = {
  * amended) — the caller supplies the icon component per tile, since
  * matching a destination to a specific glyph is a content decision, not
  * something Hero should hardcode.
+ *
+ * Two distinct technical motifs, not one: `TechnicalMotif` (dotted grid
+ * only) behind the whole Hero row, and `QuickLinksMotif` (scattered
+ * crosshairs, connecting lines, small rectangle brackets) specifically
+ * behind the quick-links grid — confirmed directly against a reference
+ * as two different compositions for two different areas, not one motif
+ * stretched to cover both.
  */
 export function Hero({
   name,
@@ -130,39 +139,42 @@ export function Hero({
         </div>
 
         {quickLinks && quickLinks.length > 0 ? (
-          <ul className="grid grid-cols-2 overflow-hidden rounded-lg border border-border bg-surface">
-            {quickLinks.map((quickLink, index) => {
-              const Icon = quickLink.icon;
-              const HoverIcon = quickLink.hoverIcon;
-              const isLeftColumn = index % 2 === 0;
-              const isTopRow = index < 2;
-              return (
-                <li
-                  key={quickLink.label}
-                  className={cn(
-                    isLeftColumn && "border-r border-border",
-                    isTopRow && "border-b border-border"
-                  )}
-                >
-                  <Link
-                    href={quickLink.href}
-                    className="group flex flex-col items-center gap-3 px-4 py-8 text-center transition-colors duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-accent/5"
+          <div className="relative">
+            <QuickLinksMotif className="-inset-10 hidden lg:block" />
+            <ul className="relative grid grid-cols-2">
+              {quickLinks.map((quickLink, index) => {
+                const Icon = quickLink.icon;
+                const HoverIcon = quickLink.hoverIcon;
+                const isLeftColumn = index % 2 === 0;
+                const isTopRow = index < 2;
+                return (
+                  <li
+                    key={quickLink.label}
+                    className={cn(
+                      isLeftColumn && "border-r border-border",
+                      isTopRow && "border-b border-border"
+                    )}
                   >
-                    <span
-                      aria-hidden="true"
-                      className="relative flex h-12 w-12 items-center justify-center rounded-md bg-muted/10 text-muted transition-colors duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:text-accent"
+                    <Link
+                      href={quickLink.href}
+                      className="group flex flex-col items-center gap-3 px-4 py-8 text-center transition-colors duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-accent/5"
                     >
-                      <Icon className="h-6 w-6 opacity-100 transition-opacity duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:opacity-0 motion-reduce:transition-none" />
-                      <HoverIcon className="absolute h-6 w-6 opacity-0 transition-opacity duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:opacity-100 motion-reduce:transition-none" />
-                    </span>
-                    <span className="text-sm font-medium text-foreground">
-                      {quickLink.label}
-                    </span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+                      <span
+                        aria-hidden="true"
+                        className="relative flex h-12 w-12 items-center justify-center rounded-md bg-muted/10 text-muted transition-colors duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:text-accent"
+                      >
+                        <Icon className="h-6 w-6 opacity-100 transition-opacity duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:opacity-0 motion-reduce:transition-none" />
+                        <HoverIcon className="absolute h-6 w-6 opacity-0 transition-opacity duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:opacity-100 motion-reduce:transition-none" />
+                      </span>
+                      <span className="text-sm font-medium text-foreground">
+                        {quickLink.label}
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         ) : null}
       </div>
     </section>

@@ -6,10 +6,17 @@ type TechnicalMotifProps = {
 
 /**
  * 006-design-system.md, Section 10's technical-motif exception: an
- * abstract, non-figurative background — a dotted grid, a pair of
- * concentric crosshair circles, an arc, and a small measurement mark.
- * No person, product, metaphor, or scene — only the same geometric
- * language already licensed by Section 2 and Section 6.
+ * abstract, non-figurative dotted grid background. No person, product,
+ * metaphor, or scene — only the same geometric language already
+ * licensed by Section 2 and Section 6.
+ *
+ * Deliberately dots only, not a compound illustration — the earlier
+ * version also included concentric crosshair circles and an arc,
+ * confirmed directly against a reference as reading too much like a
+ * standalone illustration ("archery target") rather than quiet texture.
+ * A distinct, smaller motif exists for behind the Hero's quick-links
+ * grid specifically (`QuickLinksMotif.tsx`) — this component no longer
+ * tries to cover that case too.
  *
  * A licensed visual-language decision, not a content component — it owns
  * no responsibility 008-component-library.md would need to track (no
@@ -45,15 +52,6 @@ export function TechnicalMotif({ className }: TechnicalMotifProps) {
         </pattern>
       </defs>
       <rect width="400" height="400" fill="url(#technical-motif-grid)" />
-      <g stroke="currentColor" strokeWidth="1" fill="none">
-        <circle cx="320" cy="90" r="70" />
-        <circle cx="320" cy="90" r="45" />
-        <line x1="320" y1="8" x2="320" y2="172" />
-        <line x1="238" y1="90" x2="400" y2="90" />
-        <path d="M 40 300 A 120 120 0 0 1 160 240" />
-        <line x1="40" y1="285" x2="40" y2="315" />
-        <line x1="25" y1="300" x2="55" y2="300" />
-      </g>
     </svg>
   );
 }
