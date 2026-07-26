@@ -1,5 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
+import { cn } from "@/lib/cn";
 import { CallToAction } from "@/components/call-to-action/CallToAction";
 import { TechnicalMotif } from "@/components/decorative/TechnicalMotif";
 
@@ -10,6 +11,13 @@ type QuickLink = {
    * (006-design-system.md, Section 9). The caller chooses the icon,
    * keeping Hero itself icon-agnostic. */
   icon: LucideIcon;
+  /** The "opened" counterpart shown on hover (e.g. Folder → FolderOpen,
+   * Mail → MailOpen) — both variants come from the same Lucide set, so
+   * this stays within 006 Section 9's single-icon-set rule rather than
+   * introducing a second style. A CSS-only cross-fade
+   * (028-interaction-language.md, Section 8), the same technique as
+   * ThemeToggle's icon morph, applied on hover instead of on click. */
+  hoverIcon: LucideIcon;
 };
 
 type HeroProps = {
@@ -114,20 +122,30 @@ export function Hero({
         </div>
 
         {quickLinks && quickLinks.length > 0 ? (
-          <ul className="grid grid-cols-2 gap-4">
-            {quickLinks.map((quickLink) => {
+          <ul className="grid grid-cols-2 overflow-hidden rounded-lg border border-border bg-surface">
+            {quickLinks.map((quickLink, index) => {
               const Icon = quickLink.icon;
+              const HoverIcon = quickLink.hoverIcon;
+              const isLeftColumn = index % 2 === 0;
+              const isTopRow = index < 2;
               return (
-                <li key={quickLink.label}>
+                <li
+                  key={quickLink.label}
+                  className={cn(
+                    isLeftColumn && "border-r border-border",
+                    isTopRow && "border-b border-border"
+                  )}
+                >
                   <Link
                     href={quickLink.href}
-                    className="group flex flex-col items-center gap-3 rounded-lg border border-border bg-surface px-4 py-8 text-center transition-colors duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-accent hover:bg-accent/5"
+                    className="group flex flex-col items-center gap-3 px-4 py-8 text-center transition-colors duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-accent/5"
                   >
                     <span
                       aria-hidden="true"
-                      className="flex h-12 w-12 items-center justify-center rounded-md bg-muted/10 text-muted transition-colors duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:text-accent"
+                      className="relative flex h-12 w-12 items-center justify-center rounded-md bg-muted/10 text-muted transition-colors duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:text-accent"
                     >
-                      <Icon className="h-6 w-6" />
+                      <Icon className="h-6 w-6 opacity-100 transition-opacity duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:opacity-0 motion-reduce:transition-none" />
+                      <HoverIcon className="absolute h-6 w-6 opacity-0 transition-opacity duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:opacity-100 motion-reduce:transition-none" />
                     </span>
                     <span className="text-sm font-medium text-foreground">
                       {quickLink.label}

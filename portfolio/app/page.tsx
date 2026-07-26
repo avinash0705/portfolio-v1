@@ -1,4 +1,13 @@
-import { BookOpen, FileText, Layers, Mail } from "lucide-react";
+import {
+  Book,
+  BookOpen,
+  File,
+  FileText,
+  Folder,
+  FolderOpen,
+  Mail,
+  MailOpen,
+} from "lucide-react";
 import { Hero } from "@/components/hero/Hero";
 import { SectionHeading } from "@/components/section-heading/SectionHeading";
 import { Highlight } from "@/components/highlight/Highlight";
@@ -44,10 +53,30 @@ export default function Home() {
           positioningStatement="Building products where performance, accessibility, and measurable outcomes matter."
           supportingSentence="I craft fast, accessible, evidence-backed web experiences — never a claim this site can't back up."
           quickLinks={[
-            { label: "Case Studies", href: "/case-studies", icon: Layers },
-            { label: "Resume", href: "/resume", icon: FileText },
-            { label: "Journal", href: "/journal", icon: BookOpen },
-            { label: "Contact", href: "/contact", icon: Mail },
+            {
+              label: "Case Studies",
+              href: "/case-studies",
+              icon: Folder,
+              hoverIcon: FolderOpen,
+            },
+            {
+              label: "Resume",
+              href: "/resume",
+              icon: File,
+              hoverIcon: FileText,
+            },
+            {
+              label: "Journal",
+              href: "/journal",
+              icon: Book,
+              hoverIcon: BookOpen,
+            },
+            {
+              label: "Contact",
+              href: "/contact",
+              icon: Mail,
+              hoverIcon: MailOpen,
+            },
           ]}
         />
 
