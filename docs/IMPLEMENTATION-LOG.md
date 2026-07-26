@@ -70,3 +70,27 @@ A deliberate pause before Hero, per the same discipline as the design-review pau
 | Contact Methods | ⏳ | — | — | — |
 
 Order follows the sequence agreed in conversation, not `008-component-library.md`'s own listing order: Navigation → Section Heading → Highlight → Call to Action → Metric / Evidence Block (given deliberate extra attention, per its centrality to "Evidence Over Claims") → remaining components.
+
+---
+
+## Engineering Metrics
+
+Tracked from Navigation onward, backfilled accurately against the real commit history (not estimated) rather than only applied going forward, so the trend is visible across the whole matrix. "Abstractions reused" counts our own previously-built modules only — a platform built-in (e.g. `next/image`) is reflected in "new dependencies," not counted as a reused abstraction.
+
+| Component | Spec changes required | New abstractions introduced | Existing abstractions reused | New dependencies |
+|---|:---:|:---:|:---:|:---:|
+| Navigation | 0 | 5 (`NavLink`, `ThemeToggle`, `MobileNav`, `NavList`, `cn()`) | 0 | 0 |
+| Section Heading | 0 | 1 | 0 | 0 |
+| Highlight | 0 | 1 | 0 | 0 |
+| Call to Action | 0 | 1 | 1 (`cn()`) | 0 |
+| Metric / Evidence Block — numeric | 1 (028 Section 12/22 amendment) | 2 (`MetricEvidenceBlock`, `AnimatedOverlay`) | 0 | 0 |
+| Metric / Evidence Block — comparative | 0 | 1 | 0 (had its own local, later-duplicated formatter at ship time) | 0 |
+| Metric / Evidence Block — diagram/artifact | 0 | 1 | 0 | 0 |
+| *(health check)* Formatter extraction | 0 | 1 (`formatMetricValue`) | — (this is the reuse-creation event itself) | 0 |
+| **006 containers amendment** | 1 (proactive addition, not a discovered gap — see note below) | 0 | — | 0 |
+
+**Running totals before Hero**: 2 specification changes across 7 components + 1 refactor + 1 proactive amendment; 0 new npm dependencies added at any point; abstraction reuse present but modest so far (`cn()` twice) — worth watching whether it climbs as more components ship, per the healthy-trend signal this metric is meant to surface.
+
+**A note on the 006 amendment's category**: unlike items #1 and #2 below, this wasn't a gap *discovered* during implementation — it was a design direction proposed directly by the project owner (containers-are-the-exception, editorial layout over card-based dashboard layout) and resolved into `006-design-system.md` before Hero, following the same "resolve real behavior-changing decisions immediately, don't batch them" rule already established for item #2. Recorded here for the metric's sake, not folded into the gaps table below, since it isn't a specification defect.
+
+---
