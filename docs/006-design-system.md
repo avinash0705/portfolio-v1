@@ -37,7 +37,7 @@ Nothing in the interface should look hand-crafted or bespoke per-screen. The sam
 
 - **A thin dividing rule between sections is not a container.** It's the same structural signal as whitespace itself, made only slightly more explicit — Navigation's bottom border is this, not a box.
 - **Interactive controls are not subject to this rule.** A button or Call to Action needs a visible boundary to be usable — that boundary is a functional affordance, not decorative grouping, and stays governed by `008-component-library.md`'s own component specs.
-- **Where a container is legitimate**: code snippets, architecture diagrams, interactive demos, the zoomable evidence artifacts already described in `008-component-library.md`, Section 8's diagram/artifact variant, and the Hero's capability-summary panel (`008-component-library.md`, Section 2) — content with a genuine functional reason to be visually bounded. Everywhere else, whitespace, alignment, and typographic weight carry the hierarchy instead.
+- **Where a container is legitimate**: code snippets, architecture diagrams, interactive demos, and the zoomable evidence artifacts already described in `008-component-library.md`, Section 8's diagram/artifact variant — content with a genuine functional reason to be visually bounded. Everywhere else, whitespace, alignment, and typographic weight carry the hierarchy instead.
 
 ---
 

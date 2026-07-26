@@ -1,18 +1,14 @@
 import type { LucideIcon } from "lucide-react";
+import Link from "next/link";
 import { CallToAction } from "@/components/call-to-action/CallToAction";
 import { TechnicalMotif } from "@/components/decorative/TechnicalMotif";
 
-type Capability = {
+type QuickLink = {
   label: string;
-  /** Must be independently verifiable elsewhere in the portfolio (a
-   * performance budget, an accessibility conformance target, case study
-   * evidence) — never a generic claim with no corresponding evidence
-   * (008-component-library.md, Section 2, as amended). */
-  description: string;
-  /** Decorative only — the label and description already carry the
-   * meaning (006-design-system.md, Section 9: icons support a label,
-   * never replace one). The caller chooses the icon, keeping Hero itself
-   * icon-agnostic. */
+  href: string;
+  /** Decorative only — the label already carries the meaning
+   * (006-design-system.md, Section 9). The caller chooses the icon,
+   * keeping Hero itself icon-agnostic. */
   icon: LucideIcon;
 };
 
@@ -29,10 +25,11 @@ type HeroProps = {
    * or extend the positioning statement's own claim, never introduce a
    * new one, and is capped at one sentence. */
   supportingSentence?: string;
-  /** Optional capability-summary panel (008-component-library.md,
-   * Section 2, as amended). 3–4 bullets restating the positioning
-   * statement's substance in scannable form. */
-  capabilities?: Capability[];
+  /** Optional quick-links panel (008-component-library.md, Section 2, as
+   * amended) — up to four icon + label tiles to major site destinations.
+   * Each must point to a real, already-documented page in
+   * 003-information-architecture.md, never an invented one. */
+  quickLinks?: QuickLink[];
 };
 
 /**
@@ -40,12 +37,23 @@ type HeroProps = {
  * the two-page guardrail, because Homepage's entire one-job is
  * inseparable from it. No container for the primary content
  * (006-design-system.md, Section 2, as amended): typography and
- * whitespace only. The capability panel is the one named exception to
- * that rule — it needs a visible boundary to read as one discrete unit
- * beside the positioning statement, the same functional reasoning a
- * diagram gets. No motion: nothing here is long-form, scroll-triggered
- * content, and every item is required to be understood in the first five
- * seconds, not revealed progressively.
+ * whitespace only. The quick-links panel needs no named container
+ * exception of its own — each tile is an interactive control (a real
+ * link), already covered by Section 2's existing "interactive controls
+ * are not subject to this rule" carve-out, the same reasoning
+ * Call to Action's own visible boundary rests on.
+ *
+ * The quick-links panel is deliberately styled subordinate to the
+ * primary/secondary CTA above it (muted icon tint, no accent fill,
+ * smaller type) — 014-homepage.md, Section 4 requires Contact never
+ * compete with Case Studies for the visitor's first action, and Section
+ * 6 bans a second equally-weighted CTA. Visual weight is what keeps a
+ * Contact tile here from becoming a second primary action rather than a
+ * lightweight, secondary way to jump elsewhere on the site.
+ *
+ * No motion: nothing here is long-form, scroll-triggered content, and
+ * every item is required to be understood in the first five seconds,
+ * not revealed progressively.
  *
  * The primary/secondary CTA copy and destinations are fixed by
  * 014-homepage.md, Section 4 — not configurable props, since there is
@@ -62,17 +70,17 @@ type HeroProps = {
  * typeface exception — never the role/name lines above it, which stay in
  * the one interface typeface everything else uses.
  *
- * Capability icons come from Lucide (006-design-system.md, Section 9, as
- * amended) — the caller supplies the icon component per bullet, since
- * matching a capability's meaning to a specific glyph is a content
- * decision, not something Hero should hardcode.
+ * Quick-link icons come from Lucide (006-design-system.md, Section 9, as
+ * amended) — the caller supplies the icon component per tile, since
+ * matching a destination to a specific glyph is a content decision, not
+ * something Hero should hardcode.
  */
 export function Hero({
   name,
   role,
   positioningStatement,
   supportingSentence,
-  capabilities,
+  quickLinks,
 }: HeroProps) {
   return (
     <section id="hero" className="relative overflow-hidden py-24 lg:py-32">
@@ -105,35 +113,30 @@ export function Hero({
           </div>
         </div>
 
-        {capabilities && capabilities.length > 0 ? (
-          <div className="rounded-lg border border-border bg-surface p-6">
-            <ul className="flex flex-col divide-y divide-border">
-              {capabilities.map((capability) => {
-                const Icon = capability.icon;
-                return (
-                  <li
-                    key={capability.label}
-                    className="flex items-start gap-3 py-3 first:pt-0 last:pb-0"
+        {quickLinks && quickLinks.length > 0 ? (
+          <ul className="grid grid-cols-2 gap-4">
+            {quickLinks.map((quickLink) => {
+              const Icon = quickLink.icon;
+              return (
+                <li key={quickLink.label}>
+                  <Link
+                    href={quickLink.href}
+                    className="group flex flex-col items-center gap-3 rounded-lg border border-border bg-surface px-4 py-8 text-center transition-colors duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:border-accent hover:bg-accent/5"
                   >
                     <span
                       aria-hidden="true"
-                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-accent/10 text-accent"
+                      className="flex h-12 w-12 items-center justify-center rounded-md bg-muted/10 text-muted transition-colors duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:text-accent"
                     >
-                      <Icon className="h-5 w-5" />
+                      <Icon className="h-6 w-6" />
                     </span>
-                    <div>
-                      <p className="text-sm font-semibold text-foreground">
-                        {capability.label}
-                      </p>
-                      <p className="mt-1 text-sm text-muted">
-                        {capability.description}
-                      </p>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
+                    <span className="text-sm font-medium text-foreground">
+                      {quickLink.label}
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
         ) : null}
       </div>
     </section>

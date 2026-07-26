@@ -1,4 +1,4 @@
-import { Accessibility, Gauge, TrendingUp } from "lucide-react";
+import { BookOpen, FileText, Layers, Mail } from "lucide-react";
 import { Hero } from "@/components/hero/Hero";
 import { SectionHeading } from "@/components/section-heading/SectionHeading";
 import { Highlight } from "@/components/highlight/Highlight";
@@ -43,25 +43,11 @@ export default function Home() {
           role="Lead Frontend Engineer"
           positioningStatement="Building products where performance, accessibility, and measurable outcomes matter."
           supportingSentence="I craft fast, accessible, evidence-backed web experiences — never a claim this site can't back up."
-          capabilities={[
-            {
-              label: "Performance",
-              description:
-                "Core Web Vitals held within budget — 011-performance.md.",
-              icon: Gauge,
-            },
-            {
-              label: "Accessibility",
-              description:
-                "WCAG 2.2 AA conformance target — 010-accessibility.md.",
-              icon: Accessibility,
-            },
-            {
-              label: "Impact",
-              description:
-                "Every claim backed by a case study or a defensible metric.",
-              icon: TrendingUp,
-            },
+          quickLinks={[
+            { label: "Case Studies", href: "/case-studies", icon: Layers },
+            { label: "Resume", href: "/resume", icon: FileText },
+            { label: "Journal", href: "/journal", icon: BookOpen },
+            { label: "Contact", href: "/contact", icon: Mail },
           ]}
         />
 

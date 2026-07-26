@@ -1,6 +1,6 @@
 # Component Library
 
-**Version:** 1.2
+**Version:** 1.3
 **Status:** Active
 
 ---
@@ -67,7 +67,7 @@ This is the single strongest defence against design-system sprawl available to a
 
 **Where it's used.** Homepage only. Granted the narrow exception (see Guardrail Principle) because Homepage's entire one-job is inseparable from this pattern — every other homepage section exists to build on what Hero establishes.
 
-**Content ownership.** Name, current role/level, a single positioning sentence, optionally one supporting sentence directly beneath it, the primary/secondary CTA (`014-homepage.md`, Sections 4–5), and optionally a small, fixed capability-summary panel — 3–4 short value-proposition bullets restating the positioning statement's substance in scannable form. Every capability statement must be independently verifiable elsewhere in the portfolio (a performance budget, an accessibility conformance target, case study evidence) — never a claim with no corresponding evidence, per `000-philosophy.md`'s "Evidence Over Claims." The optional supporting sentence may only restate or extend the positioning statement's own claim in one line — it may never introduce a new claim the positioning statement doesn't already make, and it is capped at one sentence, the same way the positioning statement itself is. It never contains a biography, a list of technologies, or narrative prose — that content is explicitly excluded from the homepage entirely.
+**Content ownership.** Name, current role/level, a single positioning sentence, optionally one supporting sentence directly beneath it, the primary/secondary CTA (`014-homepage.md`, Sections 4–5), and optionally a small, fixed quick-links panel — up to four icon-and-label tiles, each linking to a real, already-documented destination in `003-information-architecture.md`, never an invented one. The optional supporting sentence may only restate or extend the positioning statement's own claim in one line — it may never introduce a new claim the positioning statement doesn't already make, and it is capped at one sentence, the same way the positioning statement itself is. The quick-links panel is a secondary, lightweight navigation aid, not a second CTA hierarchy — it must stay visually subordinate to the primary/secondary CTA above it, so that a Contact tile among them never competes with Case Studies for the visitor's first action (`014-homepage.md`, Sections 4 and 6). It never contains a biography, a list of technologies, or narrative prose — that content is explicitly excluded from the homepage entirely.
 
 **Variants.** None. There is exactly one Hero, because there is exactly one Homepage.
 
