@@ -1,6 +1,6 @@
 # Design System Philosophy
 
-**Version:** 1.0
+**Version:** 1.1
 **Status:** Active
 
 ---
@@ -32,6 +32,12 @@ It is explicitly not playful, not "startup-friendly," not warm-and-approachable 
 The interface is built from **flat surfaces, strict alignment, and generous negative space**, with depth introduced only where it communicates layering (Section 8), never for texture or decoration.
 
 Nothing in the interface should look hand-crafted or bespoke per-screen. The same handful of surface treatments, used consistently, should be recognizable across every page — this is what makes the system feel engineered rather than designed page-by-page.
+
+**Containers are the exception, not the default.** Information is organised by rhythm, alignment, and typography before borders, backgrounds, or shadows are introduced. A card, a bordered box, or a coloured background wrapped around a passive block of content must justify its existence the same way a component must (`005-design-principles.md`, Principle 8) — most content doesn't need one. The default question for any section is not "what should its container look like?" but "does it need a container at all?" This is what separates an editorial layout from a dashboard: a case study, a set of highlights, or a metric should read as part of one continuous, carefully typeset document, not as a grid of interchangeable cards.
+
+- **A thin dividing rule between sections is not a container.** It's the same structural signal as whitespace itself, made only slightly more explicit — Navigation's bottom border is this, not a box.
+- **Interactive controls are not subject to this rule.** A button or Call to Action needs a visible boundary to be usable — that boundary is a functional affordance, not decorative grouping, and stays governed by `008-component-library.md`'s own component specs.
+- **Where a container is legitimate**: code snippets, architecture diagrams, interactive demos, and the zoomable evidence artifacts already described in `008-component-library.md`, Section 8's diagram/artifact variant — content with a genuine functional reason to be visually bounded. Everywhere else, whitespace, alignment, and typographic weight carry the hierarchy instead.
 
 ---
 
@@ -89,6 +95,8 @@ Elevation communicates **state and layering**, never decoration. Something is el
 
 - The interface is flat by default. Elevation is the exception, and its presence should always mean something specific to the visitor.
 - Elevation is expressed subtly — through restrained shadow or border treatment — never through heavy, skeuomorphic shadow work that draws attention to itself.
+
+This is distinct from Section 2's container principle: elevation governs when something is layered *above* the rest of the interface; Section 2 governs whether ordinary, non-layered content should be boxed at all. A flat, shadowless bordered card is still a container in the sense Section 2 argues against, even though it introduces no elevation whatsoever.
 
 ---
 
