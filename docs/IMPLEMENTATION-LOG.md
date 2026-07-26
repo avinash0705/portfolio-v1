@@ -63,7 +63,7 @@ A deliberate pause before Hero, per the same discipline as the design-review pau
 | Metric / Evidence Block — comparative | ✅ | ✅ | ✅ | 0 — delta computation (normal, before=0, no-change cases) verified against real SSR output. |
 | Metric / Evidence Block — diagram/artifact | ✅ | ✅ | ✅ | 0 — zoom ships as progressive-enhancement baseline only (disclosed scope decision, in-page overlay deferred); verified against a real generated test image, including fetching the linked full-size URL directly (200, image/png). **Metric / Evidence Block is now complete — all three variants implemented.** |
 | Hero | ✅ | ✅ | ✅ | 0 — `<h1>` placement (role, not name or positioning statement) was a genuine open choice resolved as engineering judgment, not a spec defect. Heading structure, content, and both CTAs verified against real SSR output; caught and corrected a wrong attribute-order assumption in my own verification pattern before accepting the result. |
-| Case Study Preview | ⏳ | — | — | — |
+| Case Study Preview | ✅ | ✅ | ✅ | 0 — **the composition finding that mattered most**: the prediction going in was that this component would compose richly from Highlight/Metric/CTA. Re-reading 008's actual content ownership (title, one-line summary, link — nothing else), that would have been a spec violation, not an achievement. Reused almost nothing, deliberately: considered reusing Section Heading (shape matches — short label + optional description) and declined, since its stated responsibility (introduce a page section) genuinely differs from this one (identify a link within a list). Single-link-target structure and aria-label precision verified against real SSR output. |
 | Journal Preview | ⏳ | — | — | — |
 | Experience Summary | ✅ | ✅ | ✅ | 0 — two components, not three: condensed (genuinely different shape, teaser only) stays separate, but full-tabular and narrative unified into one (`ExperienceSummaryList`) since an optional per-role `evolutionNote` field is the only difference between them, per 008's own "same underlying data" framing. Reuses `Highlight` for role bullets (exported `HighlightProps` from Highlight.tsx first — additive, no behaviour change). Reused-union enforcement, heading structure, and the embedded Highlight's real markup all verified against SSR output. |
 | Decision / Trade-off Block | ✅ | ✅ | ✅ | 0 — one component with a discriminated union (not two separate files, unlike Metric/Evidence Block's genuinely different variants), since decision and trade-off share identical rendering shape per 008's own "share the same content-ownership rule." Mandatory counter-statement and mixed-kind rejection both verified via @ts-expect-error; no-container compliance verified against real SSR output. |
@@ -92,8 +92,9 @@ Tracked from Navigation onward, backfilled accurately against the real commit hi
 | Decision / Trade-off Block | 0 | 1 (one component, two variants via discriminated union) | 0 | 0 |
 | Experience Summary | 0 | 2 (`ExperienceSummaryCondensed`, `ExperienceSummaryList`) | 1 (`Highlight`, embedded for role bullets — required exporting `HighlightProps` first) | 0 |
 | Contact Methods | 0 | 1 | 0 (reused the underline-draw *CSS pattern* from `Highlight`, copied not extracted — below rule-of-three) | 0 |
+| Case Study Preview | 0 | 1 | 0 (deliberately — considered reusing Section Heading, declined; the underline-draw pattern was also deliberately *not* applied here, staying at 2 occurrences rather than reflexively becoming 3) | 0 |
 
-**Running totals through Contact Methods**: 2 specification changes across 11 components + 1 refactor + 1 proactive amendment; 0 new npm dependencies added at any point; the underline-draw pattern is now at 2 occurrences (`Highlight`, `Contact Methods`) — one more and it crosses the extraction threshold established in the health check.
+**Running totals through Case Study Preview**: 2 specification changes across 12 components + 1 refactor + 1 proactive amendment; 0 new npm dependencies added at any point. Reuse count holds rather than climbs this round — not a regression in the trend, but evidence the metric is measuring something real: reuse happens when responsibilities genuinely match, not on a schedule.
 
 **A note on the 006 amendment's category**: unlike items #1 and #2 below, this wasn't a gap *discovered* during implementation — it was a design direction proposed directly by the project owner (containers-are-the-exception, editorial layout over card-based dashboard layout) and resolved into `006-design-system.md` before Hero, following the same "resolve real behavior-changing decisions immediately, don't batch them" rule already established for item #2. Recorded here for the metric's sake, not folded into the gaps table below, since it isn't a specification defect.
 
@@ -105,7 +106,7 @@ A single always-current rollup, distinct from the growing per-component table ab
 
 | Metric | Value |
 |---|---:|
-| Components implemented | 9 / 11 (Navigation, Hero, Section Heading, Highlight, Call to Action, Metric / Evidence Block, Decision / Trade-off Block, Experience Summary, Contact Methods) |
+| Components implemented | 10 / 11 (Navigation, Hero, Section Heading, Highlight, Call to Action, Metric / Evidence Block, Decision / Trade-off Block, Experience Summary, Contact Methods, Case Study Preview) |
 | Components reused by another component | 2 (`CallToAction` by Hero; `Highlight` by Experience Summary) |
 | Shared utilities | 2 (`cn()`, `formatMetricValue`) |
 | New dependencies introduced | 0 |
