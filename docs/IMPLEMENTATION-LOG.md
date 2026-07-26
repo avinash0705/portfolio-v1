@@ -62,7 +62,7 @@ A deliberate pause before Hero, per the same discipline as the design-review pau
 | Metric / Evidence Block — numeric | ✅ | ✅ | ✅ | 0 net (item #2 above surfaced and resolved during design review, before code) — canonical-value claim verified directly against real SSR output, not just code inspection. |
 | Metric / Evidence Block — comparative | ✅ | ✅ | ✅ | 0 — delta computation (normal, before=0, no-change cases) verified against real SSR output. |
 | Metric / Evidence Block — diagram/artifact | ✅ | ✅ | ✅ | 0 — zoom ships as progressive-enhancement baseline only (disclosed scope decision, in-page overlay deferred); verified against a real generated test image, including fetching the linked full-size URL directly (200, image/png). **Metric / Evidence Block is now complete — all three variants implemented.** |
-| Hero | ⏳ | — | — | — |
+| Hero | ✅ | ✅ | ✅ | 0 — `<h1>` placement (role, not name or positioning statement) was a genuine open choice resolved as engineering judgment, not a spec defect. Heading structure, content, and both CTAs verified against real SSR output; caught and corrected a wrong attribute-order assumption in my own verification pattern before accepting the result. |
 | Case Study Preview | ⏳ | — | — | — |
 | Journal Preview | ⏳ | — | — | — |
 | Experience Summary | ⏳ | — | — | — |
@@ -88,8 +88,9 @@ Tracked from Navigation onward, backfilled accurately against the real commit hi
 | Metric / Evidence Block — diagram/artifact | 0 | 1 | 0 | 0 |
 | *(health check)* Formatter extraction | 0 | 1 (`formatMetricValue`) | — (this is the reuse-creation event itself) | 0 |
 | **006 containers amendment** | 1 (proactive addition, not a discovered gap — see note below) | 0 | — | 0 |
+| Hero | 0 | 1 | 1 (`CallToAction`) — first genuine cross-*component* reuse beyond the `cn()` utility | 0 |
 
-**Running totals before Hero**: 2 specification changes across 7 components + 1 refactor + 1 proactive amendment; 0 new npm dependencies added at any point; abstraction reuse present but modest so far (`cn()` twice) — worth watching whether it climbs as more components ship, per the healthy-trend signal this metric is meant to surface.
+**Running totals through Hero**: 2 specification changes across 8 components + 1 refactor + 1 proactive amendment; 0 new npm dependencies added at any point; abstraction reuse climbing as intended — `cn()` twice, and Hero is the first case of one *component* reusing another (`CallToAction`) rather than only sharing a small utility. Exactly the trend this metric was added to surface.
 
 **A note on the 006 amendment's category**: unlike items #1 and #2 below, this wasn't a gap *discovered* during implementation — it was a design direction proposed directly by the project owner (containers-are-the-exception, editorial layout over card-based dashboard layout) and resolved into `006-design-system.md` before Hero, following the same "resolve real behavior-changing decisions immediately, don't batch them" rule already established for item #2. Recorded here for the metric's sake, not folded into the gaps table below, since it isn't a specification defect.
 
