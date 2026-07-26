@@ -13,8 +13,12 @@ type SectionHeadingProps = {
    * heading level depends on where this section sits on its page. */
   level?: 2 | 3;
   /** Enables deep-linking for fixed-structure content (Case Studies,
-   * AgentPrep) per 027-application-behaviour.md, Section 2. Omitted
-   * elsewhere. */
+   * AgentPrep) per 027-application-behaviour.md, Section 2. Also doubles
+   * as Section Index's measurement anchor on any page using it
+   * (008-component-library.md, Section 12) — putting the id on the
+   * heading itself, not a wrapping element, is what keeps Section
+   * Index's marker aligned with this heading's own position rather than
+   * whatever padding surrounds it. */
   id?: string;
   /** A single trailing link to a fuller version of this section's content
    * elsewhere on the site (008-component-library.md, Section 3, as

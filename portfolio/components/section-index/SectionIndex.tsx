@@ -146,15 +146,15 @@ export function SectionIndex({ sectionIds }: SectionIndexProps) {
             {!isLast ? (
               <span
                 className={cn(
-                  "absolute left-1/2 w-px -translate-x-1/2",
-                  index < currentIndex ? "bg-accent" : "bg-border"
+                  "absolute left-1/2 w-0 -translate-x-1/2 border-l-2 border-dashed",
+                  index < currentIndex ? "border-accent" : "border-border"
                 )}
                 style={{
                   top: segmentTop,
                   height: segmentHeight,
                   transition: reducedMotion
                     ? "none"
-                    : `background-color 150ms ${EASING}`,
+                    : `border-color 150ms ${EASING}`,
                 }}
               />
             ) : null}

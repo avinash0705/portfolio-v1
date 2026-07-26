@@ -69,9 +69,12 @@ type HeroProps = {
  * None"). Reuses the existing CallToAction component rather than
  * reimplementing button markup.
  *
- * `id="hero"` is Section Index's anchor for this section
- * (008-component-library.md, Section 12) — Hero is always first in the
- * page's fixed section order (014-homepage.md, Section 3).
+ * `id="hero"` lives on the role line (`<h1>`), not the outer `<section>`
+ * — it's Section Index's anchor for this section (008-component-library.md,
+ * Section 12), and anchoring to the visible role text rather than the
+ * section's own top padding is what keeps Section Index's marker aligned
+ * with real content instead of empty space above it. Hero is always
+ * first in the page's fixed section order (014-homepage.md, Section 3).
  *
  * The positioning statement is the one place on the site that uses the
  * display serif licensed by 006-design-system.md, Section 4's third
@@ -91,12 +94,15 @@ export function Hero({
   quickLinks,
 }: HeroProps) {
   return (
-    <section id="hero" className="relative overflow-hidden py-24 lg:py-32">
+    <section className="relative overflow-hidden py-24 lg:py-32">
       <TechnicalMotif className="hidden lg:block" />
       <div className="relative grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:items-start lg:gap-16">
         <div>
           <p className="text-sm text-muted">{name}</p>
-          <h1 className="mt-1 text-sm font-medium tracking-wide text-accent uppercase">
+          <h1
+            id="hero"
+            className="mt-1 text-sm font-medium tracking-wide text-accent uppercase"
+          >
             {role}
           </h1>
           <p className="mt-6 font-display text-4xl leading-[1.1] font-medium tracking-tight text-foreground sm:text-5xl lg:text-6xl">

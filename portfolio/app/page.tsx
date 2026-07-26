@@ -24,7 +24,10 @@ import { SectionIndex } from "@/components/section-index/SectionIndex";
  *
  * SECTION_IDS is Section Index's entire content-ownership surface
  * (008-component-library.md, Section 12) — it must list the same six
- * sections, in the same order, as the actual `id` attributes below.
+ * sections, in the same order, as the actual `id` attributes below. Each
+ * id lives on the section's own heading (or Hero's role line), not the
+ * outer `<section>` wrapper, so Section Index's markers align with each
+ * section's visible content, not its top padding.
  *
  * Placeholder content: no real content exists yet (Phase 3). The example
  * data below is the same representative content used throughout this
@@ -80,15 +83,12 @@ export default function Home() {
           ]}
         />
 
-        <section
-          id="highlights"
-          className="border-t border-border py-20 lg:py-28"
-        >
+        <section className="border-t border-border py-20 lg:py-28">
           {/* No viewAllHref here, deliberately: 003-information-architecture.md
               has no dedicated Highlights index page for this to point to —
               008's amended Section 3 licenses the link only where a real
               destination already exists. */}
-          <SectionHeading title="Highlights" />
+          <SectionHeading id="highlights" title="Highlights" />
           <ul className="mt-8 grid gap-8 sm:grid-cols-3">
             <li>
               <Highlight
@@ -110,11 +110,9 @@ export default function Home() {
           </ul>
         </section>
 
-        <section
-          id="experience"
-          className="border-t border-border py-20 lg:py-28"
-        >
+        <section className="border-t border-border py-20 lg:py-28">
           <SectionHeading
+            id="experience"
             title="Experience"
             viewAllHref="/experience"
             viewAllLabel="View full experience"
@@ -128,11 +126,9 @@ export default function Home() {
           </div>
         </section>
 
-        <section
-          id="case-studies"
-          className="border-t border-border py-20 lg:py-28"
-        >
+        <section className="border-t border-border py-20 lg:py-28">
           <SectionHeading
+            id="case-studies"
             title="Case Studies"
             viewAllHref="/case-studies"
             viewAllLabel="View all case studies"
@@ -162,8 +158,9 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="journal" className="border-t border-border py-20 lg:py-28">
+        <section className="border-t border-border py-20 lg:py-28">
           <SectionHeading
+            id="journal"
             title="Journal"
             viewAllHref="/journal"
             viewAllLabel="View all journal entries"
@@ -186,8 +183,8 @@ export default function Home() {
           </ul>
         </section>
 
-        <section id="contact" className="border-t border-border py-20 lg:py-28">
-          <SectionHeading title="Contact" />
+        <section className="border-t border-border py-20 lg:py-28">
+          <SectionHeading id="contact" title="Contact" />
           <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted">
             If something here resonates with your work, I&apos;d be glad to hear
             from you.
