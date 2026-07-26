@@ -88,7 +88,7 @@ export default function Home() {
               has no dedicated Highlights index page for this to point to —
               008's amended Section 3 licenses the link only where a real
               destination already exists. */}
-          <SectionHeading id="highlights" title="Highlights" />
+          <SectionHeading id="highlights" title="Highlights" indexMark />
           <ul className="mt-8 grid gap-8 sm:grid-cols-3">
             <li>
               <Highlight
@@ -116,6 +116,7 @@ export default function Home() {
             title="Experience"
             viewAllHref="/experience"
             viewAllLabel="View full experience"
+            indexMark
           />
           <div className="mt-8">
             <ExperienceSummaryCondensed
@@ -132,6 +133,7 @@ export default function Home() {
             title="Case Studies"
             viewAllHref="/case-studies"
             viewAllLabel="View all case studies"
+            indexMark
           />
           <ul className="mt-8 grid gap-8 sm:grid-cols-2">
             <li>
@@ -164,6 +166,7 @@ export default function Home() {
             title="Journal"
             viewAllHref="/journal"
             viewAllLabel="View all journal entries"
+            indexMark
           />
           <ul className="mt-8 grid gap-8 sm:grid-cols-2">
             <li>
@@ -184,7 +187,7 @@ export default function Home() {
         </section>
 
         <section className="border-t border-border py-20 lg:py-28">
-          <SectionHeading id="contact" title="Contact" />
+          <SectionHeading id="contact" title="Contact" indexMark />
           <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted">
             If something here resonates with your work, I&apos;d be glad to hear
             from you.

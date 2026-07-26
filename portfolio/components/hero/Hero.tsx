@@ -104,6 +104,12 @@ export function Hero({
             className="mt-1 text-sm font-medium tracking-wide text-accent uppercase"
           >
             {role}
+            <span
+              aria-hidden="true"
+              className="ml-3 normal-case tracking-normal text-muted"
+            >
+              —
+            </span>
           </h1>
           <p className="mt-6 font-display text-4xl leading-[1.1] font-medium tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             {positioningStatement}

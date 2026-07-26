@@ -31,6 +31,12 @@ type SectionHeadingProps = {
    * a bare "View all" — the same name-precision rule Highlight's linked
    * variant follows. */
   viewAllLabel?: string;
+  /** Renders a short, `aria-hidden` decorative dash after the title,
+   * mirroring the dash in Section Index's own marker row (`01 —`) on
+   * pages that use it. Purely visual pairing — never enabled on a page
+   * without Section Index, where an orphaned dash would have nothing to
+   * visually pair with. */
+  indexMark?: boolean;
 };
 
 /**
@@ -46,6 +52,7 @@ export function SectionHeading({
   id,
   viewAllHref,
   viewAllLabel,
+  indexMark,
 }: SectionHeadingProps) {
   const Heading = level === 3 ? "h3" : "h2";
 
@@ -57,6 +64,11 @@ export function SectionHeading({
           className="text-xl leading-tight font-semibold text-foreground md:text-2xl"
         >
           {title}
+          {indexMark ? (
+            <span aria-hidden="true" className="ml-3 text-muted">
+              —
+            </span>
+          ) : null}
         </Heading>
         {description ? (
           <p className="mt-1 text-sm leading-relaxed text-muted">

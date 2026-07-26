@@ -11,6 +11,15 @@ import { cn } from "@/lib/cn";
 const EASING = "cubic-bezier(0.16, 1, 0.3, 1)";
 const TRANSITION = `color 150ms ${EASING}, background-color 150ms ${EASING}, border-color 150ms ${EASING}`;
 
+// Fixed column widths for the "01 — •" row (number / dash / dot), so the
+// connector line below can be positioned at a known offset (the dot
+// column's centre) instead of guessed against flex/gap-rendered widths.
+const NUMBER_COL = 24;
+const DASH_COL = 16;
+const DOT_COL = 24;
+const ROW_HEIGHT = 20;
+const CONNECTOR_LEFT = NUMBER_COL + DASH_COL + DOT_COL / 2;
+
 type SectionIndexProps = {
   /** Ordered ids of the page's fixed top-level sections
    * (008-component-library.md, Section 12). Each id must match a real
@@ -106,23 +115,29 @@ export function SectionIndex({ sectionIds }: SectionIndexProps) {
   return (
     <div
       aria-hidden="true"
-      className="relative hidden w-8 shrink-0 lg:block"
+      className="relative hidden w-16 shrink-0 lg:block"
       style={{ height: totalHeight }}
     >
       {sectionIds.map((id, index) => {
         const reached = index <= currentIndex;
         const isLast = index === sectionIds.length - 1;
         const markerTop = bounds[index].top - originTop;
-        const segmentTop = markerTop + 28;
+        const segmentTop = markerTop + ROW_HEIGHT;
         const segmentHeight = isLast
           ? 0
-          : Math.max(bounds[index + 1].top - bounds[index].top - 28, 0);
+          : Math.max(bounds[index + 1].top - bounds[index].top - ROW_HEIGHT, 0);
+        const dotColor = reached
+          ? "var(--color-accent)"
+          : "var(--color-border)";
 
         return (
           <div key={id}>
             <div
-              className="absolute left-0 flex flex-col items-center"
-              style={{ top: markerTop }}
+              className="absolute left-0 grid items-center"
+              style={{
+                top: markerTop,
+                gridTemplateColumns: `${NUMBER_COL}px ${DASH_COL}px ${DOT_COL}px`,
+              }}
             >
               <span
                 className={cn(
@@ -133,9 +148,10 @@ export function SectionIndex({ sectionIds }: SectionIndexProps) {
               >
                 {String(index + 1).padStart(2, "0")}
               </span>
+              <span className="h-px w-2.5 justify-self-center bg-border" />
               <span
                 className={cn(
-                  "mt-2 h-2 w-2 rounded-full border",
+                  "h-2 w-2 justify-self-center rounded-full border",
                   reached
                     ? "border-accent bg-accent"
                     : "border-border bg-transparent"
@@ -145,16 +161,20 @@ export function SectionIndex({ sectionIds }: SectionIndexProps) {
             </div>
             {!isLast ? (
               <span
-                className={cn(
-                  "absolute left-1/2 w-0 -translate-x-1/2 border-l-2 border-dashed",
-                  index < currentIndex ? "border-accent" : "border-border"
-                )}
+                className="absolute w-px"
                 style={{
+                  left: CONNECTOR_LEFT,
                   top: segmentTop,
                   height: segmentHeight,
-                  transition: reducedMotion
-                    ? "none"
-                    : `border-color 150ms ${EASING}`,
+                  // A repeating gradient gives evenly-spaced round dots
+                  // with real gaps (008 Section 12's "connecting line"),
+                  // which border-dashed/border-dotted can't reproduce —
+                  // both render tight, un-spaced marks regardless of
+                  // border-width. Colour swaps instantly rather than
+                  // transitioning: gradients don't interpolate smoothly
+                  // across a CSS transition, and animating this
+                  // decorative line isn't worth a second technique.
+                  backgroundImage: `repeating-linear-gradient(to bottom, ${dotColor} 0, ${dotColor} 2px, transparent 2px, transparent 6px)`,
                 }}
               />
             ) : null}
