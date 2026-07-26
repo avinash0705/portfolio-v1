@@ -15,7 +15,14 @@ export function Navigation() {
   return (
     <header className="relative border-b border-border">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
-        <Link href="/" className="text-sm font-medium text-foreground">
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-sm font-medium text-foreground"
+        >
+          <span
+            aria-hidden="true"
+            className="h-1.5 w-1.5 rounded-full bg-accent"
+          />
           Portfolio
         </Link>
 
