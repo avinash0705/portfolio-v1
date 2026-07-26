@@ -65,7 +65,7 @@ A deliberate pause before Hero, per the same discipline as the design-review pau
 | Hero | ✅ | ✅ | ✅ | 0 — `<h1>` placement (role, not name or positioning statement) was a genuine open choice resolved as engineering judgment, not a spec defect. Heading structure, content, and both CTAs verified against real SSR output; caught and corrected a wrong attribute-order assumption in my own verification pattern before accepting the result. |
 | Case Study Preview | ⏳ | — | — | — |
 | Journal Preview | ⏳ | — | — | — |
-| Experience Summary | ⏳ | — | — | — |
+| Experience Summary | ✅ | ✅ | ✅ | 0 — two components, not three: condensed (genuinely different shape, teaser only) stays separate, but full-tabular and narrative unified into one (`ExperienceSummaryList`) since an optional per-role `evolutionNote` field is the only difference between them, per 008's own "same underlying data" framing. Reuses `Highlight` for role bullets (exported `HighlightProps` from Highlight.tsx first — additive, no behaviour change). Reused-union enforcement, heading structure, and the embedded Highlight's real markup all verified against SSR output. |
 | Decision / Trade-off Block | ✅ | ✅ | ✅ | 0 — one component with a discriminated union (not two separate files, unlike Metric/Evidence Block's genuinely different variants), since decision and trade-off share identical rendering shape per 008's own "share the same content-ownership rule." Mandatory counter-statement and mixed-kind rejection both verified via @ts-expect-error; no-container compliance verified against real SSR output. |
 | Contact Methods | ⏳ | — | — | — |
 
@@ -90,8 +90,9 @@ Tracked from Navigation onward, backfilled accurately against the real commit hi
 | **006 containers amendment** | 1 (proactive addition, not a discovered gap — see note below) | 0 | — | 0 |
 | Hero | 0 | 1 | 1 (`CallToAction`) — first genuine cross-*component* reuse beyond the `cn()` utility | 0 |
 | Decision / Trade-off Block | 0 | 1 (one component, two variants via discriminated union) | 0 | 0 |
+| Experience Summary | 0 | 2 (`ExperienceSummaryCondensed`, `ExperienceSummaryList`) | 1 (`Highlight`, embedded for role bullets — required exporting `HighlightProps` first) | 0 |
 
-**Running totals through Decision / Trade-off Block**: 2 specification changes across 9 components + 1 refactor + 1 proactive amendment; 0 new npm dependencies added at any point; abstraction reuse present at `cn()` (x2) and `CallToAction` (x1) — Decision/Trade-off Block didn't reuse an existing abstraction itself, but its choice to be one component instead of two is itself a form of avoiding unnecessary proliferation.
+**Running totals through Experience Summary**: 2 specification changes across 10 components + 1 refactor + 1 proactive amendment; 0 new npm dependencies added at any point; abstraction reuse now includes a genuine component-inside-component case (`Highlight` embedded in `ExperienceSummaryList`), alongside `cn()` (x2) and `CallToAction` (x1) — the reuse trend this metric exists to track continues climbing, not flattening.
 
 **A note on the 006 amendment's category**: unlike items #1 and #2 below, this wasn't a gap *discovered* during implementation — it was a design direction proposed directly by the project owner (containers-are-the-exception, editorial layout over card-based dashboard layout) and resolved into `006-design-system.md` before Hero, following the same "resolve real behavior-changing decisions immediately, don't batch them" rule already established for item #2. Recorded here for the metric's sake, not folded into the gaps table below, since it isn't a specification defect.
 
@@ -103,8 +104,8 @@ A single always-current rollup, distinct from the growing per-component table ab
 
 | Metric | Value |
 |---|---:|
-| Components implemented | 7 / 11 (Navigation, Hero, Section Heading, Highlight, Call to Action, Metric / Evidence Block, Decision / Trade-off Block) |
-| Components reused by another component | 1 (`CallToAction`, reused by Hero) |
+| Components implemented | 8 / 11 (Navigation, Hero, Section Heading, Highlight, Call to Action, Metric / Evidence Block, Decision / Trade-off Block, Experience Summary) |
+| Components reused by another component | 2 (`CallToAction` by Hero; `Highlight` by Experience Summary) |
 | Shared utilities | 2 (`cn()`, `formatMetricValue`) |
 | New dependencies introduced | 0 |
 | Specification defects found | 1 resolved (#2), 1 open (#1) |

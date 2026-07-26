@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-type HighlightProps =
+export type HighlightProps =
   | { claim: string; href?: undefined; linkLabel?: undefined }
   | { claim: string; href: string; linkLabel: string };
 
