@@ -69,12 +69,12 @@ type HeroProps = {
  * None"). Reuses the existing CallToAction component rather than
  * reimplementing button markup.
  *
- * `id="hero"` lives on the role line (`<h1>`), not the outer `<section>`
- * — it's Section Index's anchor for this section (008-component-library.md,
- * Section 12), and anchoring to the visible role text rather than the
- * section's own top padding is what keeps Section Index's marker aligned
- * with real content instead of empty space above it. Hero is always
- * first in the page's fixed section order (014-homepage.md, Section 3).
+ * `id="hero"` lives on the name line (`{name}`), the very first line of
+ * real content in Hero — not the outer `<section>`, and not the role
+ * line below it — since that's what keeps Section Index's marker
+ * aligned with the actual first line a visitor reads, matching every
+ * other section's own heading-anchored alignment. Hero is always first
+ * in the page's fixed section order (014-homepage.md, Section 3).
  *
  * The positioning statement is the one place on the site that uses the
  * display serif licensed by 006-design-system.md, Section 4's third
@@ -98,18 +98,14 @@ export function Hero({
       <TechnicalMotif className="hidden lg:block" />
       <div className="relative grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:items-start lg:gap-16">
         <div>
-          <p className="text-sm text-muted">{name}</p>
-          <h1
-            id="hero"
-            className="mt-1 text-sm font-medium tracking-wide text-accent uppercase"
-          >
-            {role}
-            <span
-              aria-hidden="true"
-              className="ml-3 normal-case tracking-normal text-muted"
-            >
+          <p id="hero" className="text-sm text-muted">
+            {name}
+            <span aria-hidden="true" className="ml-3">
               —
             </span>
+          </p>
+          <h1 className="mt-1 text-sm font-medium tracking-wide text-accent uppercase">
+            {role}
           </h1>
           <p className="mt-6 font-display text-4xl leading-[1.1] font-medium tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             {positioningStatement}
