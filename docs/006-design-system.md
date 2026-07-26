@@ -1,6 +1,6 @@
 # Design System Philosophy
 
-**Version:** 1.1
+**Version:** 1.2
 **Status:** Active
 
 ---
@@ -37,7 +37,7 @@ Nothing in the interface should look hand-crafted or bespoke per-screen. The sam
 
 - **A thin dividing rule between sections is not a container.** It's the same structural signal as whitespace itself, made only slightly more explicit — Navigation's bottom border is this, not a box.
 - **Interactive controls are not subject to this rule.** A button or Call to Action needs a visible boundary to be usable — that boundary is a functional affordance, not decorative grouping, and stays governed by `008-component-library.md`'s own component specs.
-- **Where a container is legitimate**: code snippets, architecture diagrams, interactive demos, and the zoomable evidence artifacts already described in `008-component-library.md`, Section 8's diagram/artifact variant — content with a genuine functional reason to be visually bounded. Everywhere else, whitespace, alignment, and typographic weight carry the hierarchy instead.
+- **Where a container is legitimate**: code snippets, architecture diagrams, interactive demos, the zoomable evidence artifacts already described in `008-component-library.md`, Section 8's diagram/artifact variant, and the Hero's capability-summary panel (`008-component-library.md`, Section 2) — content with a genuine functional reason to be visually bounded. Everywhere else, whitespace, alignment, and typographic weight carry the hierarchy instead.
 
 ---
 
@@ -113,6 +113,8 @@ Icons support a text label; they do not replace one, especially in navigation �
 Custom illustration is avoided by default. Generic, stock-style illustration (abstract people, whimsical graphics, decorative blobs) directly contradicts "Engineering Over Marketing" and "Evidence Over Claims" (`000-philosophy.md`) — it is exactly the kind of visual filler that competes with content instead of supporting it.
 
 Real technical diagrams (architecture diagrams, system flows, decision trees) are not illustration in this sense — they are content, and are encouraged wherever they clarify a real technical decision documented in a case study.
+
+A narrow exception exists for abstract, non-figurative technical motifs — crosshairs, dotted grids, measurement marks, thin arcs, blueprint-style guide lines. These may be used where they reinforce information architecture or engineering context, provided they remain low contrast (approximately 3–5% opacity), never compete with primary content, and never depict people, products, metaphors, or illustrative scenes. This is distinct from the illustration this policy otherwise excludes: it carries no narrative or figurative content, only the same geometric, engineered visual language already licensed by Section 2 and Section 6. Which pages actually use this motif is a page-level decision (`014-homepage.md`, Section 6, for the Homepage's current scope) — this section licenses the visual language itself, not any specific placement.
 
 ---
 

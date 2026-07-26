@@ -1,6 +1,6 @@
 # Homepage
 
-**Version:** 1.0
+**Version:** 1.1
 **Status:** Active
 
 ---
@@ -75,7 +75,7 @@ Nothing else is required above the fold. If a visitor never scrolls, these four 
 - **A full biography or "About" narrative** — the Homepage answers "who is this engineer?" through evidence and orientation, not through prose autobiography; a deeper narrative belongs in Experience or a case study, not here.
 - **Unverified or unattributable metrics** — any number shown must be one the author can defend if questioned, per `004-product-goals.md`'s truthfulness constraint.
 - **Generic marketing language** ("passionate," "results-driven," "ninja," "rockstar," or similar) — directly contradicts "Engineering Over Marketing" (`000-philosophy.md`).
-- **Decorative illustration or stock photography** — excluded by `006-design-system.md`'s illustration and photography policies.
+- **Decorative illustration or stock photography** — excluded by `006-design-system.md`'s illustration and photography policies. The narrow abstract technical-motif exception `006-design-system.md`, Section 10 permits (crosshairs, dotted grids, measurement marks) is allowed on the Homepage; figurative illustration, stock art, and decorative scenes remain fully excluded.
 - **The full Case Studies index or full Journal archive** — the homepage teases (Sections 4 and 5); the full lists live on their own pages, per `003-information-architecture.md`.
 - **A second competing primary action** — only one primary CTA may exist per Section 4; a homepage with two equally weighted calls to action has failed its own hierarchy.
 

@@ -1,6 +1,6 @@
 # Component Library
 
-**Version:** 1.0
+**Version:** 1.1
 **Status:** Active
 
 ---
@@ -40,6 +40,7 @@ This is the single strongest defence against design-system sprawl available to a
 | Decision / Trade-off Block | Case Studies, AgentPrep, Journal | Shared |
 | Call to Action | Homepage, Resume, Contact | Shared |
 | Contact Methods | Contact | Shared (exception) |
+| Section Index | Homepage, Case Studies, AgentPrep | Shared |
 | Product Timeline | AgentPrep only | Page-scoped, not promoted |
 
 ---
@@ -66,7 +67,7 @@ This is the single strongest defence against design-system sprawl available to a
 
 **Where it's used.** Homepage only. Granted the narrow exception (see Guardrail Principle) because Homepage's entire one-job is inseparable from this pattern — every other homepage section exists to build on what Hero establishes.
 
-**Content ownership.** Name, current role/level, a single positioning sentence, and the primary/secondary CTA (`014-homepage.md`, Sections 4–5). It never contains a biography, a list of technologies, or narrative prose — that content is explicitly excluded from the homepage entirely.
+**Content ownership.** Name, current role/level, a single positioning sentence, the primary/secondary CTA (`014-homepage.md`, Sections 4–5), and optionally a small, fixed capability-summary panel — 3–4 short value-proposition bullets restating the positioning statement's substance in scannable form. Every capability statement must be independently verifiable elsewhere in the portfolio (a performance budget, an accessibility conformance target, case study evidence) — never a claim with no corresponding evidence, per `000-philosophy.md`'s "Evidence Over Claims." It never contains a biography, a list of technologies, or narrative prose — that content is explicitly excluded from the homepage entirely.
 
 **Variants.** None. There is exactly one Hero, because there is exactly one Homepage.
 
@@ -217,6 +218,24 @@ This is the single strongest defence against design-system sprawl available to a
 **Accessibility expectations.** Each method is a distinct, clearly labeled link (not icons alone, per `006-design-system.md`'s iconography policy — icons support a label, they do not replace one).
 
 **Reasons not to create a new variant.** A "compact" variant for use elsewhere on the site is not justified — per the Guardrail Principle, this pattern exists here specifically because no other page currently needs it; if one did, that would be the signal to reconsider the exception itself, not to add a variant.
+
+---
+
+## 12. Section Index
+
+**Purpose.** Give a visitor a persistent sense of structural position within a long, fixed-sequence page — how many top-level sections exist, which one is current, and how many remain — expressed spatially rather than restated in prose. This is a distinct responsibility from Section Heading (Section 3): Section Index owns position, sequence, and progress through the page's structure; Section Heading owns a section's identity, title, and description. Neither overlaps the other.
+
+**Where it's used.** Any page whose top-level sections are fixed and enumerable in its own specification: Homepage's six sections (`014-homepage.md`, Section 3), Case Studies' ten fixed sections (`015-case-studies.md`), and AgentPrep's ten fixed sections (`016-agentprep.md`) — this satisfies the Guardrail Principle's two-page threshold on its own, with no exception needed. Not used on pages without a fixed top-level sequence (a Journal entry's internal structure, Contact's single section) — an index of one, or of a variable-length structure, communicates nothing.
+
+**Content ownership.** A sequence number, a position marker (current / passed / upcoming), and the connecting line between markers — nothing else. It never contains a section's title or description; duplicating that content here would blur this component's responsibility into Section Heading's.
+
+The index communicates progress through the page's **structure**, not reading progress through the **document**. It advances only when a visitor crosses into a new top-level section — never in proportion to scroll distance, time on page, or content length. Collapsing a section, changing font size, or zooming the browser must never change what the index reports; it always represents "Hero → Highlights → Experience → Case Studies," never "42% read." This distinction is deliberate: the moment this component starts estimating reading progress, it has taken on a second, different responsibility and stopped being a structural index.
+
+**Variants.** None. A single, fixed presentation wherever it's used, for the same consistency reasoning as Navigation (Section 1).
+
+**Accessibility expectations.** Entirely `aria-hidden`. A screen reader already receives the page's real structure through Section Heading's actual heading elements in document order; overlaying a second, numeric representation of the same structure adds no information and would only add noise to non-visual navigation.
+
+**Reasons not to create a new variant.** A "compact" or numberless variant for shorter pages isn't justified — if a page's section count doesn't warrant this treatment, the page simply doesn't use the component at all (as Contact and individual Journal entries already don't), rather than using a stripped-down version of it.
 
 ---
 

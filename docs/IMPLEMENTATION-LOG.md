@@ -27,6 +27,23 @@ This is not a specification document — it's a working record kept during Phase
 
 Per the agreed sequence, still pending, deliberately not done yet: the `ThemeToggle` conformance fix and the testing-strategy ADR — both scheduled after the first homepage integration pass, not before it.
 
+**Track B Design Direction — Section Index & Technical Motif Amendment**: a product-level visual direction (reference screenshot plus external design discussion) proposed four elements — navigation refinement (already covered by the pending `ThemeToggle` fix), a hero background motif, a left-rail section index with numbering, and increased section spacing. Checking this against the frozen specification, rather than implementing directly, surfaced two genuine tensions instead of one straightforward addition:
+
+1. The hero's capability-summary side panel is a container, conflicting with `006`'s "containers are the exception" principle (v1.1).
+2. The hero background motif is a form of illustration, and `014-homepage.md`, Section 6 explicitly bans decorative illustration on the Homepage by name.
+3. A scroll-linked fill on the proposed section index would be a fourth entry in `028`'s Delight Moments (Section 17), which explicitly caps itself at three.
+
+All three resolved as amendments, before any component was built — the same "resolve real behavior-changing decisions immediately" discipline already applied to the `028` Section 12/22 conflict and the original containers amendment:
+
+- `006-design-system.md` (v1.1 → v1.2): Hero's capability panel added as a named container exception (Section 2); a narrow, broadly-scoped exception added to the Illustration Policy (Section 10) for abstract, non-figurative technical motifs (crosshairs, dotted grids, measurement marks) at ~3–5% opacity — the exception licenses the visual language itself, not a specific placement, so it can be reused elsewhere (e.g. Case Study diagrams) without reopening this document.
+- `014-homepage.md` (v1.0 → v1.1): Section 6's illustration ban now carves out the `006` Section 10 exception explicitly, so the two documents don't contradict each other; figurative illustration and stock art remain fully banned.
+- `008-component-library.md` (v1.0 → v1.1): Hero's content ownership (Section 2) extended to permit the capability panel, gated on every bullet being independently verifiable elsewhere in the portfolio (`000-philosophy.md`'s "Evidence Over Claims"), not a generic unbacked claim. New **Section 12 — Section Index**, a genuinely new component (position/sequence/progress) kept deliberately distinct from Section Heading (identity/title/description) — satisfies the Guardrail Principle's two-page threshold on its own (Homepage, Case Studies, AgentPrep), no exception needed. Entirely `aria-hidden`, since it duplicates structure a screen reader already gets from real headings. Explicitly scoped to structural position, not reading-progress estimation, so it can't scope-creep into a percentage-read indicator later.
+- `028-interaction-language.md` (v1.1 → v1.2): Section 5 (Spatial Continuity) gained the Section Index's scroll-driven advancement, classified positively as continuity ("communicates location, not reward or surprise") rather than merely excluded from Section 17 — the classification is what keeps Section 17's cap at three intact. Noted as exempt from Section 18's duration table, since it's continuous rather than a fixed-duration transition, for the same reason other scroll-position-driven behaviour already is.
+
+No doc change was made for the increased section spacing — `006` Section 5 never defined a numeric scale, so this is a Tailwind token adjustment at implementation time, not a specification concern.
+
+Not yet built: the Section Index component itself, the hero capability panel, and the technical motif — this entry records the specification amendment only. Implementation follows the usual pre-implementation → build → verify → post-implementation cycle, same as every Track A component.
+
 ---
 
 ## Specification Coverage Review (run after Component Library Complete, before Track B)
@@ -166,10 +183,13 @@ Tracked from Navigation onward, backfilled accurately against the real commit hi
 | Contact Methods | 0 | 1 | 0 (reused the underline-draw *CSS pattern* from `Highlight`, copied not extracted — below rule-of-three) | 0 |
 | Case Study Preview | 0 | 1 | 0 (deliberately — considered reusing Section Heading, declined; the underline-draw pattern was also deliberately *not* applied here, staying at 2 occurrences rather than reflexively becoming 3) | 0 |
 | Journal Preview | 0 | 1 | 0 (near-identical shape to Case Study Preview, deliberately not shared as code — 2 occurrences, below rule-of-three) | 0 |
+| **Section Index & technical motif amendment (006/008/014/028)** | 4 (proactive, resolved before any code — see note below) | 0 (component not yet built) | — | 0 |
 
 **Final running totals, Component Library Complete**: 2 specification changes across 13 components + 1 refactor + 1 proactive amendment; **0 new npm dependencies introduced across the entire component library**; reuse held steady rather than climbing every round — exactly what you'd expect if reuse tracks genuine shared responsibility rather than a quota. Two CSS patterns (underline-draw, easing constant) sat at 2 occurrences through to the end without ever forcing a third — the rule-of-three discipline was never violated in either direction (no premature extraction, no reflexive avoidance either).
 
 **A note on the 006 amendment's category**: unlike items #1 and #2 below, this wasn't a gap *discovered* during implementation — it was a design direction proposed directly by the project owner (containers-are-the-exception, editorial layout over card-based dashboard layout) and resolved into `006-design-system.md` before Hero, following the same "resolve real behavior-changing decisions immediately, don't batch them" rule already established for item #2. Recorded here for the metric's sake, not folded into the gaps table below, since it isn't a specification defect.
+
+**A note on the Section Index & technical motif amendment**: same category as the 006 containers amendment, not the gaps table — a proactive design direction (Track B Design Direction, see Milestones section above), checked against the frozen specification before any code existed, which surfaced two genuine tensions (illustration ban vs. the new motif; the Delight Moments cap vs. a scroll-linked index) and resolved both across four documents (`006`, `008`, `014`, `028`) in one deliberate round, before the Section Index component itself is built.
 
 ---
 
@@ -184,7 +204,7 @@ A single always-current rollup, distinct from the growing per-component table ab
 | Shared utilities | 2 (`cn()`, `formatMetricValue`) |
 | New dependencies introduced | 0 |
 | Specification defects found | 1 resolved (#2), 1 open (#1) |
-| Specification revisions required after implementation began | 0 — both changes made (#2, and the 006 containers amendment) were resolved *before* the code that depended on them was written, not discovered as defects in already-shipped work |
+| Specification revisions required after implementation began | 0 — every change made so far (#2, the 006 containers amendment, and the Section Index & technical motif amendment) was resolved *before* the code that depended on it was written, not discovered as a defect in already-shipped work |
 
 The last row is the one worth watching over time: so far, every specification change has preceded the implementation it governs, not followed a discovery of something already built being wrong. That's the strongest available signal that the specification phase actually did its job.
 
