@@ -21,7 +21,11 @@ This is not a specification document — it's a working record kept during Phase
 
 **Track A is finished. Track B (page composition) is unblocked**: building the seven pages (`014`–`019`, `026`) is now compositional — assembling already-verified pieces against each page's own spec — rather than creative, which keeps implementation risk low precisely because it comes last, as planned from the start.
 
-**Next**: the planned **Specification Coverage Review** — for every component, which specification sections govern it, which have been verified, which have automated verification versus manual review only. Distinct from code coverage; tracks whether the specifications themselves have been exercised, not whether lines of code executed.
+**Specification Coverage Review completed** before Track B began — see its own section below. Surfaced two real findings (`ThemeToggle` doesn't match `028`'s icon-morph spec; no automated test suite exists) and confirmed coverage/ownership/reuse held as intended across all of Track A.
+
+**Track B, Page 1 — Homepage composed** (commit `92946ac`): assembled entirely from already-verified components in `014`'s exact section order, no new component created or needed. Two ambiguities (the sanctioned Primary CTA repeat; per-section heading titles) resolved before composing, both confirmed correct against real SSR output afterward — not discovered as problems during composition. Remaining pages: Case Studies, Experience, Journal, Contact, Resume, AgentPrep, per the architectural-value order agreed for Track B.
+
+Per the agreed sequence, still pending, deliberately not done yet: the `ThemeToggle` conformance fix and the testing-strategy ADR — both scheduled after the first homepage integration pass, not before it.
 
 ---
 
