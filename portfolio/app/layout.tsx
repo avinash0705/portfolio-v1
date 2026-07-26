@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Newsreader } from "next/font/google";
 import { Navigation } from "@/components/navigation/Navigation";
 import "../styles/globals.css";
 
@@ -10,6 +10,17 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+// The display serif licensed by 006-design-system.md, Section 4's third
+// typeface exception — large display headings only (currently Hero's
+// positioning statement), never body copy or UI text. Newsreader specifically:
+// a calm, literary book serif, legible at very large sizes, closer to the
+// "precise, restrained, quietly confident" brand personality (006, Section 1)
+// than a more expressive or high-contrast display serif would be.
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
   subsets: ["latin"],
 });
 
@@ -45,7 +56,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${newsreader.variable} h-full antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />

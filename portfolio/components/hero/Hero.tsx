@@ -47,6 +47,11 @@ type HeroProps = {
  * `id="hero"` is Section Index's anchor for this section
  * (008-component-library.md, Section 12) — Hero is always first in the
  * page's fixed section order (014-homepage.md, Section 3).
+ *
+ * The positioning statement is the one place on the site that uses the
+ * display serif licensed by 006-design-system.md, Section 4's third
+ * typeface exception — never the role/name lines above it, which stay in
+ * the one interface typeface everything else uses.
  */
 export function Hero({
   name,
@@ -63,7 +68,7 @@ export function Hero({
           <h1 className="mt-1 text-sm font-medium tracking-wide text-accent uppercase">
             {role}
           </h1>
-          <p className="mt-6 text-4xl leading-[1.1] font-semibold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+          <p className="mt-6 font-display text-4xl leading-[1.1] font-medium tracking-tight text-foreground sm:text-5xl lg:text-6xl">
             {positioningStatement}
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-4">

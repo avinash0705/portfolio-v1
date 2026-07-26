@@ -1,6 +1,6 @@
 # Design System Philosophy
 
-**Version:** 1.2
+**Version:** 1.3
 **Status:** Active
 
 ---
@@ -56,8 +56,9 @@ The palette is **neutral-dominant**: the overwhelming majority of the interface 
 
 Typography is the primary visual material of the site — per `005-design-principles.md`, content leads and visuals support, and nowhere is that truer than in type.
 
-- One typeface family carries all interface and prose text. Visual contrast comes from weight and size, not from mixing multiple typefaces.
+- One typeface family carries all interface and prose text, with one narrow exception below for large display headings. Outside that exception, visual contrast comes from weight and size, not from mixing multiple typefaces.
 - A second, monospaced typeface is used deliberately for technical artifacts — code, metrics, identifiers — signaling technical precision the way Stripe Docs and Vercel use monospace to mark "this is exact," distinct from prose.
+- A third, serif display typeface is licensed narrowly for large display headings only — Hero's positioning statement (`008-component-library.md`, Section 2), and any equivalent single largest, most editorial moment on a page. It marks that one moment as the answer to the page's single question, the same way the monospace typeface marks technical precision — it is never used for body copy, UI labels, navigation, or sub-headings (Section Heading, `008-component-library.md`, Section 3), all of which stay governed by the one-typeface rule above.
 - Type should read as authored, not templated — line length, rhythm, and weight should feel considered on every page, not just adequate.
 
 ---
