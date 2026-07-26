@@ -95,3 +95,20 @@ Tracked from Navigation onward, backfilled accurately against the real commit hi
 **A note on the 006 amendment's category**: unlike items #1 and #2 below, this wasn't a gap *discovered* during implementation — it was a design direction proposed directly by the project owner (containers-are-the-exception, editorial layout over card-based dashboard layout) and resolved into `006-design-system.md` before Hero, following the same "resolve real behavior-changing decisions immediately, don't batch them" rule already established for item #2. Recorded here for the metric's sake, not folded into the gaps table below, since it isn't a specification defect.
 
 ---
+
+## Architecture Metrics (current snapshot, not per-component)
+
+A single always-current rollup, distinct from the growing per-component table above. Recounted against `008-component-library.md`'s actual Overview table (11 named shared components — `Product Timeline` is explicitly page-scoped and excluded from this count) rather than estimated.
+
+| Metric | Value |
+|---|---:|
+| Components implemented | 6 / 11 (Navigation, Hero, Section Heading, Highlight, Call to Action, Metric / Evidence Block) |
+| Components reused by another component | 1 (`CallToAction`, reused by Hero) |
+| Shared utilities | 2 (`cn()`, `formatMetricValue`) |
+| New dependencies introduced | 0 |
+| Specification defects found | 1 resolved (#2), 1 open (#1) |
+| Specification revisions required after implementation began | 0 — both changes made (#2, and the 006 containers amendment) were resolved *before* the code that depended on them was written, not discovered as defects in already-shipped work |
+
+The last row is the one worth watching over time: so far, every specification change has preceded the implementation it governs, not followed a discovery of something already built being wrong. That's the strongest available signal that the specification phase actually did its job.
+
+---
