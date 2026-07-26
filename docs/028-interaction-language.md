@@ -1,6 +1,6 @@
 # Interaction Language
 
-**Version:** 1.2
+**Version:** 1.3
 **Status:** Active
 
 ---
@@ -65,7 +65,7 @@ This is what separates an interface that merely follows the rules below from one
 - The theme toggle's icon morphs between states (Section 17) rather than swapping flatly — already established as one of this system's three delight moments.
 - Responsive layout changes (`007-responsive-strategy.md`) never cause content to visibly jump or teleport between breakpoints where avoidable — a card's position and size settle continuously rather than snapping.
 - A Metric / Evidence Block that expands to reveal more detail keeps its original position as the visible anchor of that detail, rather than the detail appearing disconnected elsewhere on the page.
-- The Section Index (`008-component-library.md`, Section 12) advances its marker and connecting line continuously as a visitor crosses into each new top-level section, rather than jumping between discrete states. **Scroll-linked advancement of the Section Index is classified as Spatial Continuity because it communicates location rather than reward or surprise** — it is therefore not a fourth entry in Section 17's Delight Moments, and that section's cap of three is unchanged. Because this advancement is continuous and driven directly by scroll position rather than a fixed start and end, it does not map to any tier in Section 18's duration table — the same reasoning that already exempts other scroll-position-driven behaviour (Section 7) from that table.
+- The Section Index's numbered markers (`008-component-library.md`, Section 12) advance discretely as a visitor crosses into each new top-level section — a deliberate cut, not an eased slide, confirmed directly against a reference as reading better as a discrete change of state than a continuous move. The index's separate active-position dot cluster (Section 12's narrow, explicit exception) moves continuously with raw scroll position instead, the same way a scrollbar thumb does — it tracks literal position, not "which section," so continuous movement doesn't conflict with the markers' own discrete, structure-not-percentage semantics. **Both are classified as Spatial Continuity because they communicate location rather than reward or surprise** — neither is a fourth entry in Section 17's Delight Moments, and that section's cap of three is unchanged. The cluster's continuous movement is driven directly by scroll position rather than a fixed start and end, so it does not map to any tier in Section 18's duration table — the same reasoning that already exempts other scroll-position-driven behaviour (Section 7) from that table.
 
 ---
 

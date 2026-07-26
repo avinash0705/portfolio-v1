@@ -18,17 +18,18 @@ const DASH_COL = 16;
 const DOT_COL = 24;
 const RAIL_LEFT = NUMBER_COL + DASH_COL + DOT_COL / 2;
 
-// The active section's dot cluster covers the centre 30% of that
-// section's height on the rail (35% inset top and bottom, symmetric so
-// it stays centred) — confirmed directly against a reference as a
-// smaller, more restrained zone than the original 80%.
-const ZONE_INSET_RATIO = 0.35;
-const ZONE_HEIGHT_RATIO = 0.3;
+// The active-position dot cluster's height is fixed — the same size
+// regardless of which section is active — since it now tracks raw
+// scroll position continuously rather than a given section's own zone
+// (008-component-library.md, Section 12's narrow scroll-position
+// exception). A reasoned estimate, not measured against a real render.
+const CLUSTER_HEIGHT = 120;
 
 // Real, individually-positioned circular dots (h-1 w-1 = 4px, below),
 // spaced evenly through the cluster's height — a repeating CSS gradient
 // on a 1px-wide strip can only fake tick marks, never an actual circle.
 const CLUSTER_DOT_SPACING = 10;
+const CLUSTER_DOT_COUNT = Math.floor(CLUSTER_HEIGHT / CLUSTER_DOT_SPACING) + 1;
 
 // The marker row's own rendered height (its tallest child is the
 // text-xs number, ~16px line-height) — needed to align the row's
@@ -62,20 +63,21 @@ type Bounds = { top: number; height: number };
  *    present, one uniform colour, never changes.
  * 2. Per-section marker rows ("01 — •") — a number, a short dash, and a
  *    dot that fills once its section is reached.
- * 3. A cluster of real circular dots (hollow, border only), the visible
- *    "you are here" — occupies the centre 30% of whichever section is
- *    currently active and jumps to the next section's own 30% zone the
- *    instant a visitor scrolls into it — an intentionally sudden
- *    reposition, not an eased slide (confirmed directly against a
- *    reference: this is the one element in this system that reads
- *    better as a discrete cut than a continuous move).
+ * 3. A cluster of real circular dots (hollow, border only, fixed
+ *    height), the visible "you are here" — moves continuously with raw
+ *    scroll position, the same way a scrollbar thumb does, rather than
+ *    being tied to which section is current.
  *
- * The cluster's position is still discrete per-section, never
- * proportional to how far a visitor has scrolled within one
- * (028-interaction-language.md, Section 5's progress-through-structure,
- * not reading-progress, distinction) — only *how* it changes state
- * (instantly, not eased) differs from Navigation's active-page
- * indicator.
+ * The numbered markers (2) stay strictly discrete — a marker advances
+ * only when a visitor crosses into a new section, never proportional to
+ * scroll distance. The dot cluster (3) is a deliberate, narrow exception
+ * to that rule (008-component-library.md, Section 12): it may track
+ * literal scroll position continuously, because it's a purely
+ * decorative, non-textual visual element, not a claim about reading
+ * progress. The two coexist without contradiction — one communicates
+ * structure, the other communicates literal position, and neither is
+ * confused with the other since the cluster carries no text or numbers
+ * of its own.
  *
  * Progress is measured against each section's real document position via
  * `getBoundingClientRect()` (plus scroll offset), not `offsetTop` —
@@ -112,6 +114,10 @@ export function SectionIndex({ sectionIds }: SectionIndexProps) {
   const [bounds, setBounds] = useState<Bounds[]>([]);
   const [railTop, setRailTop] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
+  // 0–1, how far scrolled through the measured content overall — drives
+  // only the decorative dot cluster's continuous position, never the
+  // numbered markers, which stay governed by `currentIndex` above.
+  const [scrollFraction, setScrollFraction] = useState(0);
   // Lazy initializer, not effect-driven: reducedMotion is only read once
   // `bounds` is populated (client-only), so a server/client mismatch on
   // this value never reaches the rendered output.
@@ -165,6 +171,20 @@ export function SectionIndex({ sectionIds }: SectionIndexProps) {
           if (y >= bounds[i].top) index = i;
         }
         setCurrentIndex(index);
+
+        // The same `y` also drives the dot cluster's continuous
+        // position — how far it sits between the first section's start
+        // and the last section's end, clamped to [0, 1].
+        const contentTop = bounds[0].top;
+        const contentHeight =
+          bounds[bounds.length - 1].top +
+          bounds[bounds.length - 1].height -
+          contentTop;
+        const fraction =
+          contentHeight > 0
+            ? Math.min(Math.max((y - contentTop) / contentHeight, 0), 1)
+            : 0;
+        setScrollFraction(fraction);
       });
     }
 
@@ -189,21 +209,13 @@ export function SectionIndex({ sectionIds }: SectionIndexProps) {
     ? bounds[bounds.length - 1].top + bounds[bounds.length - 1].height - railTop
     : 0;
 
-  // The active section's "zone" runs from its own marker to the start of
-  // the next section's (or, for the last section, to its own content's
-  // end) — the same span its marker row already anchors to.
-  const zoneStart = hasBounds ? bounds[currentIndex].top - railTop : 0;
-  const zoneEnd = hasBounds
-    ? (currentIndex + 1 < bounds.length
-        ? bounds[currentIndex + 1].top
-        : bounds[currentIndex].top + bounds[currentIndex].height) - railTop
-    : 0;
-  const zoneHeight = zoneEnd - zoneStart;
-  const clusterTop = zoneStart + zoneHeight * ZONE_INSET_RATIO;
-  const clusterHeight = zoneHeight * ZONE_HEIGHT_RATIO;
-  const clusterDotCount = Math.max(
-    Math.floor(clusterHeight / CLUSTER_DOT_SPACING) + 1,
-    1
+  // The cluster's centre tracks `scrollFraction` continuously across the
+  // rail's full height, clamped so a fixed-height cluster never renders
+  // past either end of the rail.
+  const clusterCenter = scrollFraction * totalHeight;
+  const clusterTop = Math.min(
+    Math.max(clusterCenter - CLUSTER_HEIGHT / 2, 0),
+    Math.max(totalHeight - CLUSTER_HEIGHT, 0)
   );
 
   return (
@@ -265,16 +277,16 @@ export function SectionIndex({ sectionIds }: SectionIndexProps) {
           })}
 
           {/* 3. The "you are here" dot cluster — real circular dots,
-              hollow (border only, no fill), evenly spaced through the
-              centre 30% of whichever section is currently active.
-              Repositions instantly the moment the active section
-              changes; deliberately not eased. Neutral `foreground`, not
-              `accent` — confirmed directly against a reference: this
-              rail is a decorative, aria-hidden position indicator, not a
-              primary action, so it shouldn't compete with the one
-              accent colour 006-design-system.md, Section 3 reserves for
-              actual primary actions (the CTA buttons). */}
-          {Array.from({ length: clusterDotCount }, (_, i) => (
+              hollow (border only, no fill), fixed height, moving
+              continuously with scroll position (008-component-library.md,
+              Section 12's narrow exception — see the function doc
+              comment above). Neutral `foreground`, not `accent` —
+              confirmed directly against a reference: this rail is a
+              decorative, aria-hidden position indicator, not a primary
+              action, so it shouldn't compete with the one accent colour
+              006-design-system.md, Section 3 reserves for actual
+              primary actions (the CTA buttons). */}
+          {Array.from({ length: CLUSTER_DOT_COUNT }, (_, i) => (
             <span
               key={i}
               className="absolute h-1 w-1 -translate-x-1/2 rounded-full border border-foreground bg-transparent"

@@ -1,6 +1,6 @@
 # Component Library
 
-**Version:** 1.3
+**Version:** 1.4
 **Status:** Active
 
 ---
@@ -227,9 +227,11 @@ This is the single strongest defence against design-system sprawl available to a
 
 **Where it's used.** Any page whose top-level sections are fixed and enumerable in its own specification: Homepage's six sections (`014-homepage.md`, Section 3), Case Studies' ten fixed sections (`015-case-studies.md`), and AgentPrep's ten fixed sections (`016-agentprep.md`) — this satisfies the Guardrail Principle's two-page threshold on its own, with no exception needed. Not used on pages without a fixed top-level sequence (a Journal entry's internal structure, Contact's single section) — an index of one, or of a variable-length structure, communicates nothing.
 
-**Content ownership.** A sequence number, a position marker (current / passed / upcoming), and the connecting line between markers — nothing else. It never contains a section's title or description; duplicating that content here would blur this component's responsibility into Section Heading's.
+**Content ownership.** A sequence number, a position marker (current / passed / upcoming), the connecting line between markers, and one decorative, non-textual position cluster (see below) — nothing else. It never contains a section's title or description; duplicating that content here would blur this component's responsibility into Section Heading's.
 
-The index communicates progress through the page's **structure**, not reading progress through the **document**. It advances only when a visitor crosses into a new top-level section — never in proportion to scroll distance, time on page, or content length. Collapsing a section, changing font size, or zooming the browser must never change what the index reports; it always represents "Hero → Highlights → Experience → Case Studies," never "42% read." This distinction is deliberate: the moment this component starts estimating reading progress, it has taken on a second, different responsibility and stopped being a structural index.
+The numbered markers communicate progress through the page's **structure**, not reading progress through the **document**. A marker advances only when a visitor crosses into a new top-level section — never in proportion to scroll distance, time on page, or content length. Collapsing a section, changing font size, or zooming the browser must never change what a marker reports; the markers always represent "Hero → Highlights → Experience → Case Studies," never "42% read." This distinction is deliberate for the markers: the moment they start estimating reading progress, they take on a second, different responsibility and stop being a structural index.
+
+**Narrow, explicit exception**: the active-position dot cluster — a purely decorative, non-textual, `aria-hidden` visual element, distinct from the numbered markers — may track raw scroll position continuously rather than only jumping at section boundaries. A visitor's literal position within a page is real, observable information a silent visual indicator can legitimately reflect, the same way a scrollbar thumb does, without that indicator making any claim about reading progress. This exception is scoped tightly: it applies only to this one non-textual visual element; it is not license to add a percentage-complete label, a "you've read X%" statement, or any other textual reading-progress claim anywhere on the site — those remain excluded exactly as before. If this component ever renders any text or number describing completion, that is a spec violation regardless of this exception.
 
 **Variants.** None. A single, fixed presentation wherever it's used, for the same consistency reasoning as Navigation (Section 1).
 
