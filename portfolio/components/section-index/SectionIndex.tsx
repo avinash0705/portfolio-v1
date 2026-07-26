@@ -3,22 +3,31 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "@/lib/cn";
 
-// House easing curve (028-interaction-language.md, Section 18). This
-// governs the discrete colour flip when a marker changes state, not the
-// scroll-linked advancement itself — Section 5 exempts that from the
-// duration table entirely, since it's a continuous function of scroll
-// position, not a fixed-start/fixed-end transition.
+// House easing curve (028-interaction-language.md, Section 18).
 const EASING = "cubic-bezier(0.16, 1, 0.3, 1)";
-const TRANSITION = `color 150ms ${EASING}, background-color 150ms ${EASING}, border-color 150ms ${EASING}`;
+// Marker colour flip: an instant-feeling state change, not a spatial move.
+const COLOR_TRANSITION = `color 150ms ${EASING}, background-color 150ms ${EASING}, border-color 150ms ${EASING}`;
+// The active-zone cluster sliding between sections: a genuine spatial
+// move between two known positions, the same kind of transition as
+// Navigation's active-page indicator (NavList.tsx) — so it uses that
+// same "standard" tier, not the "fast" tier above.
+const ZONE_DURATION_MS = 200;
+const ZONE_TRANSITION = `top ${ZONE_DURATION_MS}ms ${EASING}, height ${ZONE_DURATION_MS}ms ${EASING}`;
 
 // Fixed column widths for the "01 — •" row (number / dash / dot), so the
-// connector line below can be positioned at a known offset (the dot
-// column's centre) instead of guessed against flex/gap-rendered widths.
+// active-zone cluster below can be positioned at a known horizontal
+// offset (the dot column's centre) instead of guessed against
+// flex/gap-rendered widths.
 const NUMBER_COL = 24;
 const DASH_COL = 16;
 const DOT_COL = 24;
-const ROW_HEIGHT = 20;
-const CONNECTOR_LEFT = NUMBER_COL + DASH_COL + DOT_COL / 2;
+const RAIL_LEFT = NUMBER_COL + DASH_COL + DOT_COL / 2;
+
+// The active section's dot cluster covers the centre 80% of that
+// section's height on the rail (10% inset top and bottom) — per the
+// reference design, not the section's full height.
+const ZONE_INSET_RATIO = 0.1;
+const ZONE_HEIGHT_RATIO = 0.8;
 
 type SectionIndexProps = {
   /** Ordered ids of the page's fixed top-level sections
@@ -39,13 +48,28 @@ type Bounds = { top: number; height: number };
  * Overlaying a second, numeric representation would add noise, not
  * information, so the whole element is aria-hidden.
  *
+ * Three layered elements, not one:
+ * 1. A single, continuous base line spanning the full rail — always
+ *    present, one uniform colour, never changes.
+ * 2. Per-section marker rows ("01 — •") — a number, a short dash, and a
+ *    dot that fills once its section is reached.
+ * 3. A moving dot cluster, the visible "you are here" — occupies the
+ *    centre 80% of whichever section is currently active and slides to
+ *    the next section's own 80% zone as the visitor scrolls into it.
+ *
+ * The cluster moves between two known positions (one section's zone to
+ * the next's) — a discrete state change with a spatial animation, the
+ * same shape as Navigation's active-page indicator, not a continuous
+ * scroll-proportional fill. It advances only when a visitor crosses into
+ * a new section; nothing here is proportional to how far a visitor has
+ * scrolled within one (028-interaction-language.md, Section 5's
+ * progress-through-structure, not reading-progress, distinction — the
+ * cluster's *position* is discrete per-section even though its motion
+ * between positions is animated).
+ *
  * Progress is measured against the page's actual section boundaries
  * (offsetTop/offsetHeight) — the same DOM-measurement technique already
- * used for Navigation's active-page indicator (NavList.tsx) — rather than
- * estimated from scroll percentage. A marker only advances once a visitor
- * crosses into the next section; nothing here is proportional to how far
- * a visitor has scrolled within one (028-interaction-language.md, Section
- * 5's progress-through-structure, not reading-progress, distinction).
+ * used for Navigation's active-page indicator.
  */
 export function SectionIndex({ sectionIds }: SectionIndexProps) {
   const [bounds, setBounds] = useState<Bounds[]>([]);
@@ -112,75 +136,83 @@ export function SectionIndex({ sectionIds }: SectionIndexProps) {
     bounds[bounds.length - 1].height -
     originTop;
 
+  // The active section's "zone" runs from its own marker to the start of
+  // the next section's (or, for the last section, to its own content's
+  // end) — the same span its marker row already anchors to.
+  const zoneStart = bounds[currentIndex].top - originTop;
+  const zoneEnd =
+    (currentIndex + 1 < bounds.length
+      ? bounds[currentIndex + 1].top
+      : bounds[currentIndex].top + bounds[currentIndex].height) - originTop;
+  const zoneHeight = zoneEnd - zoneStart;
+  const clusterTop = zoneStart + zoneHeight * ZONE_INSET_RATIO;
+  const clusterHeight = zoneHeight * ZONE_HEIGHT_RATIO;
+
   return (
     <div
       aria-hidden="true"
       className="relative hidden w-16 shrink-0 lg:block"
       style={{ height: totalHeight }}
     >
+      {/* 1. Base line — single, continuous, always present. */}
+      <span
+        className="absolute w-px bg-border"
+        style={{ left: RAIL_LEFT, top: 0, height: totalHeight }}
+      />
+
+      {/* 2. Per-section marker rows: "01 — •". */}
       {sectionIds.map((id, index) => {
         const reached = index <= currentIndex;
-        const isLast = index === sectionIds.length - 1;
         const markerTop = bounds[index].top - originTop;
-        const segmentTop = markerTop + ROW_HEIGHT;
-        const segmentHeight = isLast
-          ? 0
-          : Math.max(bounds[index + 1].top - bounds[index].top - ROW_HEIGHT, 0);
-        const dotColor = reached
-          ? "var(--color-accent)"
-          : "var(--color-border)";
 
         return (
-          <div key={id}>
-            <div
-              className="absolute left-0 grid items-center"
-              style={{
-                top: markerTop,
-                gridTemplateColumns: `${NUMBER_COL}px ${DASH_COL}px ${DOT_COL}px`,
-              }}
+          <div
+            key={id}
+            className="absolute left-0 grid items-center"
+            style={{
+              top: markerTop,
+              gridTemplateColumns: `${NUMBER_COL}px ${DASH_COL}px ${DOT_COL}px`,
+            }}
+          >
+            <span
+              className={cn(
+                "text-xs tabular-nums",
+                reached ? "text-foreground" : "text-muted"
+              )}
+              style={{ transition: reducedMotion ? "none" : COLOR_TRANSITION }}
             >
-              <span
-                className={cn(
-                  "text-xs tabular-nums",
-                  reached ? "text-foreground" : "text-muted"
-                )}
-                style={{ transition: reducedMotion ? "none" : TRANSITION }}
-              >
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <span className="h-px w-2.5 justify-self-center bg-border" />
-              <span
-                className={cn(
-                  "h-2 w-2 justify-self-center rounded-full border",
-                  reached
-                    ? "border-accent bg-accent"
-                    : "border-border bg-transparent"
-                )}
-                style={{ transition: reducedMotion ? "none" : TRANSITION }}
-              />
-            </div>
-            {!isLast ? (
-              <span
-                className="absolute w-px"
-                style={{
-                  left: CONNECTOR_LEFT,
-                  top: segmentTop,
-                  height: segmentHeight,
-                  // A repeating gradient gives evenly-spaced round dots
-                  // with real gaps (008 Section 12's "connecting line"),
-                  // which border-dashed/border-dotted can't reproduce —
-                  // both render tight, un-spaced marks regardless of
-                  // border-width. Colour swaps instantly rather than
-                  // transitioning: gradients don't interpolate smoothly
-                  // across a CSS transition, and animating this
-                  // decorative line isn't worth a second technique.
-                  backgroundImage: `repeating-linear-gradient(to bottom, ${dotColor} 0, ${dotColor} 2px, transparent 2px, transparent 6px)`,
-                }}
-              />
-            ) : null}
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span className="h-px w-2.5 justify-self-center bg-border" />
+            <span
+              className={cn(
+                "h-2 w-2 justify-self-center rounded-full border",
+                reached
+                  ? "border-accent bg-accent"
+                  : "border-border bg-transparent"
+              )}
+              style={{ transition: reducedMotion ? "none" : COLOR_TRANSITION }}
+            />
           </div>
         );
       })}
+
+      {/* 3. The moving "you are here" dot cluster — the centre 80% of
+          whichever section is currently active, sliding to the next
+          section's own 80% zone as the visitor scrolls into it. A
+          repeating gradient renders the "multiple dots" without needing
+          to compute how many discrete dot elements fit a given height. */}
+      <span
+        className="absolute w-px"
+        style={{
+          left: RAIL_LEFT,
+          top: clusterTop,
+          height: clusterHeight,
+          backgroundImage:
+            "repeating-linear-gradient(to bottom, var(--color-accent) 0, var(--color-accent) 2px, transparent 2px, transparent 6px)",
+          transition: reducedMotion ? "none" : ZONE_TRANSITION,
+        }}
+      />
     </div>
   );
 }
