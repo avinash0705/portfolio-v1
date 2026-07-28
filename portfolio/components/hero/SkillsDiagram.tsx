@@ -8,15 +8,24 @@ type SkillsDiagramProps = {
   className?: string;
 };
 
-const VIEW_W = 560;
-const VIEW_H = 320;
+// A true circle in a square viewBox — the previous version used a wide
+// ellipse (left/right clusters), which a live screenshot showed
+// overlapping on the left and clipping past Hero's own overflow-hidden
+// edge on the right. Equal radius on both axes, evenly spaced by angle,
+// is what actually produces a clock-face layout with equal spacing
+// all the way around, not just within a left half and a right half.
+const VIEW_W = 520;
+const VIEW_H = 520;
 const CENTER_X = VIEW_W / 2;
 const CENTER_Y = VIEW_H / 2;
-// An ellipse, not a circle — wider than it is tall, matching the
-// reference's two-column-ish spread rather than a perfect radial ring.
-const RADIUS_X = 220;
-const RADIUS_Y = 128;
-const CHIP_HALF_W = 70;
+const RADIUS_X = 150;
+const RADIUS_Y = 150;
+const CHIP_HALF_W = 62;
+
+// Chosen so that (radius + chip half-width) stays safely inside the
+// viewBox on every side — 260 ± (150 + 62) = 48..472, comfortably
+// within 0..520 — rather than discovering the margin was wrong from a
+// clipped screenshot again.
 
 // Reveal choreography (028-interaction-language.md, Section 13's
 // exception for this component): each connector draws in, then its chip
@@ -77,7 +86,7 @@ export function SkillsDiagram({ className }: SkillsDiagramProps) {
           const dx = CENTER_X - x;
           const dy = CENTER_Y - y;
           const length = Math.hypot(dx, dy) || 1;
-          const pullBack = 46;
+          const pullBack = 34;
           const startX = x + (dx / length) * pullBack;
           const startY = y + (dy / length) * pullBack;
           const controlX = (startX + CENTER_X) / 2;

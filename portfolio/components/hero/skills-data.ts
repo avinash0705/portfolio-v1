@@ -39,21 +39,26 @@ export type Skill = {
  * directly, avoids that boundary crossing entirely rather than working
  * around it.
  *
- * Five per side, angles spanning roughly the left half (90°–270°) and
- * right half (-90°–90°) of the diagram's ellipse respectively, ordered
- * top to bottom within each side.
+ * A true clock face, not a left/right split — ten items evenly spaced
+ * every 36° (360° ÷ 10) around the full circle, starting at 12 o'clock
+ * (90°) and proceeding clockwise (decreasing angle), matching a
+ * reference directly. An earlier version confined five angles to the
+ * left half and five to the right half of a wide ellipse, which
+ * clustered too tightly on one side and clipped past Hero's own
+ * overflow boundary on the other — full, even, 36°-apart spacing is
+ * what actually prevents both problems at once.
  */
 export const SKILLS_CENTER_LABEL = "Frontend Engineering";
 
 export const SKILLS: Skill[] = [
-  { label: "Accessibility", icon: Accessibility, angle: 145 },
-  { label: "Performance", icon: Gauge, angle: 165 },
-  { label: "React", icon: Atom, angle: 185 },
-  { label: "TypeScript", icon: Braces, angle: 205 },
-  { label: "JavaScript", icon: FileCode, angle: 225 },
-  { label: "Next.js", icon: Layers, angle: 45 },
-  { label: "Architecture", icon: Boxes, angle: 25 },
-  { label: "System Design", icon: Network, angle: 5 },
-  { label: "Testing", icon: FlaskConical, angle: -15 },
-  { label: "DOM Manipulation", icon: Code2, angle: -35 },
+  { label: "Accessibility", icon: Accessibility, angle: 90 },
+  { label: "Next.js", icon: Layers, angle: 54 },
+  { label: "Architecture", icon: Boxes, angle: 18 },
+  { label: "System Design", icon: Network, angle: -18 },
+  { label: "Testing", icon: FlaskConical, angle: -54 },
+  { label: "DOM Manipulation", icon: Code2, angle: -90 },
+  { label: "JavaScript", icon: FileCode, angle: -126 },
+  { label: "TypeScript", icon: Braces, angle: -162 },
+  { label: "React", icon: Atom, angle: -198 },
+  { label: "Performance", icon: Gauge, angle: -234 },
 ];
