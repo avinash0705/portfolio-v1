@@ -25,8 +25,14 @@ type CallToActionProps = {
 // with the button rather than staying a fixed illustration, which can't
 // be confirmed without a browser to render different label lengths against.
 const BRUSH_STROKE_PATH =
-  "M 3 6 C 1 14 0 26 4 34 C 30 38 70 37 97 33 C 99 25 99 13 96 5 C 68 1 28 2 3 6 Z";
-const UNDERLINE_PATH = "M2,6 C25,2 50,8 75,4 C85,3 92,5 98,6";
+  "M 2 5 C 0 16 -1 28 3 37 C 32 42 68 41 98 36 C 101 24 101 11 97 3 C 66 -2 26 0 2 5 Z";
+// A pronounced, obviously wavy curve — earlier used a much flatter curve
+// (a small fraction of the viewBox height), which non-uniform stretching
+// to the label's actual width/height then flattened further, to the
+// point of barely reading as curved at all. Swinging across nearly the
+// full viewBox height, rather than a small fraction of it, is what keeps
+// the curve visible after that stretch.
+const UNDERLINE_PATH = "M0,10 Q25,0 50,9 T100,7";
 
 /**
  * 008-component-library.md, Section 10. A zero-JS Server Component — every
@@ -52,17 +58,20 @@ export function CallToAction({ label, href, weight }: CallToActionProps) {
   return (
     <Link
       href={href}
-      className="group relative inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-foreground"
+      className="group relative inline-flex items-center gap-2 px-6 py-3 text-sm font-medium text-foreground"
     >
+      {/* Bleeds beyond the button's own box (-inset-3, not inset-0) so the
+          brush stroke reads as visibly wider/bigger than the label, not a
+          tight-fitting shape traced around the text. */}
       <svg
         aria-hidden="true"
         viewBox="0 0 100 40"
         preserveAspectRatio="none"
         className={cn(
-          "pointer-events-none absolute inset-0 h-full w-full text-muted transition-opacity duration-150 ease-[cubic-bezier(0.16,1,0.3,1)]",
+          "pointer-events-none absolute -inset-3 h-[calc(100%+1.5rem)] w-[calc(100%+1.5rem)] text-muted transition-opacity duration-150 ease-[cubic-bezier(0.16,1,0.3,1)]",
           isPrimary
-            ? "opacity-60 group-hover:opacity-90"
-            : "opacity-20 group-hover:opacity-35"
+            ? "opacity-75 group-hover:opacity-100"
+            : "opacity-30 group-hover:opacity-50"
         )}
       >
         <path d={BRUSH_STROKE_PATH} fill="currentColor" />
@@ -72,14 +81,14 @@ export function CallToAction({ label, href, weight }: CallToActionProps) {
         {isPrimary ? (
           <svg
             aria-hidden="true"
-            viewBox="0 0 100 10"
+            viewBox="0 0 100 12"
             preserveAspectRatio="none"
-            className="pointer-events-none absolute inset-x-0 -bottom-1.5 h-2 w-full text-accent"
+            className="pointer-events-none absolute inset-x-0 -bottom-2 h-3 w-full text-accent"
           >
             <path
               d={UNDERLINE_PATH}
               stroke="currentColor"
-              strokeWidth="3"
+              strokeWidth="2.5"
               strokeLinecap="round"
               fill="none"
             />
