@@ -8,11 +8,17 @@ type QuickLinksMotifProps = {
  * 006-design-system.md, Section 10's technical-motif exception — the
  * same licensed visual language as `TechnicalMotif.tsx` (abstract,
  * non-figurative, no person/product/metaphor/scene), a distinct, smaller
- * composition: scattered "+" crosshair marks, thin connecting lines
- * between them, and two small rectangle brackets — construction/guide
- * marks, not a dotted grid. Sized to sit specifically behind Hero's
- * quick-links grid, confirmed directly against a reference, rather than
- * spanning the whole Hero the way `TechnicalMotif` does.
+ * composition: scattered "+" crosshair marks and thin connecting lines
+ * between them — construction/guide marks, not a dotted grid. Sized to
+ * sit specifically behind Hero's quick-links grid, confirmed directly
+ * against a reference, rather than spanning the whole Hero the way
+ * `TechnicalMotif` does.
+ *
+ * No rectangle shapes — an earlier version included two small rectangle
+ * brackets alongside the crosshairs; removed after direct feedback
+ * against a reference that specifically called out square/rectangular
+ * shapes as unwanted background illustration, keeping only the
+ * crosshairs and lines.
  *
  * Deliberately a second, separate component rather than a variant prop
  * on `TechnicalMotif` — the two are visually and structurally distinct
@@ -34,8 +40,6 @@ export function QuickLinksMotif({ className }: QuickLinksMotifProps) {
       <g stroke="currentColor" strokeWidth="1" fill="none">
         <path d="M 30 20 L 230 20 L 230 130" />
         <path d="M 60 210 L 190 260" />
-        <rect x="10" y="4" width="20" height="20" />
-        <rect x="250" y="110" width="18" height="18" />
       </g>
       <g stroke="currentColor" strokeWidth="1">
         <path d="M30 12v16M22 20h16" />

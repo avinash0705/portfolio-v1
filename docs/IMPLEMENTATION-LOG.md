@@ -151,6 +151,9 @@ Not yet built: the Section Index component itself, the hero capability panel, an
 - **Not yet re-verified visually**: with the tiles' own background removed along with the outer container, nothing in the tile now sits opaque between the motif and the label text/icon at rest — legibility should hold at the existing ~5% opacity, but that's a visual judgment call, not something `curl` can confirm.
 - **Verified**: format/typecheck/lint/build clean; real production build confirmed the quick-links `<ul>` carries no border/background/rounded classes, the per-tile cross-divider pattern is unchanged and correct, `QuickLinksMotif`'s rectangle-bracket markup is present, and `TechnicalMotif`'s old circle/arc group is completely gone from rendered output while its dotted-grid pattern remains.
 
+**`QuickLinksMotif`'s rectangle brackets removed — a further reference confirmed the no-container direction and specifically called out square/rectangular shapes as unwanted.** The crosshair marks and connecting lines stay; only the two `<rect>` elements are gone. No spec change — `006` Section 10's exception licenses the visual language generally, not a specific fixed set of shapes, so narrowing which shapes one motif instance uses is an implementation choice, not a policy change.
+- **Verified**: format/typecheck/lint/build clean; real production build confirmed both rectangle elements are gone from rendered output, the crosshair/line paths are unchanged, and the quick-links grid still has no outer border.
+
 ---
 
 ## Specification Coverage Review (run after Component Library Complete, before Track B)

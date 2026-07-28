@@ -90,7 +90,7 @@ type HeroProps = {
  *
  * Two distinct technical motifs, not one: `TechnicalMotif` (dotted grid
  * only) behind the whole Hero row, and `QuickLinksMotif` (scattered
- * crosshairs, connecting lines, small rectangle brackets) specifically
+ * crosshairs and connecting lines, no rectangle shapes) specifically
  * behind the quick-links grid — confirmed directly against a reference
  * as two different compositions for two different areas, not one motif
  * stretched to cover both.
