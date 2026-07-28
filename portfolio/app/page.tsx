@@ -12,8 +12,6 @@ import { Hero } from "@/components/hero/Hero";
 import { SectionHeading } from "@/components/section-heading/SectionHeading";
 import { Highlight } from "@/components/highlight/Highlight";
 import { ExperienceSummaryCondensed } from "@/components/experience-summary/ExperienceSummaryCondensed";
-import { CaseStudyPreview } from "@/components/case-study-preview/CaseStudyPreview";
-import { JournalPreview } from "@/components/journal-preview/JournalPreview";
 import { CallToAction } from "@/components/call-to-action/CallToAction";
 import { SectionIndex } from "@/components/section-index/SectionIndex";
 
@@ -22,8 +20,17 @@ import { SectionIndex } from "@/components/section-index/SectionIndex";
  * order. This is assembly of already-verified components, not new
  * component design.
  *
+ * Case Studies and Journal are deliberately not rendered here for now —
+ * deferred until those pages themselves exist, rather than shipping
+ * teaser sections that link to nothing real yet. `CaseStudyPreview` and
+ * `JournalPreview` remain fully built and verified in the component
+ * library; only this page's composition omits them. Re-add both
+ * sections (and their two ids, in 014's original order) once those
+ * pages are ready — this is a sequencing decision, not a removal of
+ * scope from `014-homepage.md`, which still specifies both sections.
+ *
  * SECTION_IDS is Section Index's entire content-ownership surface
- * (008-component-library.md, Section 12) — it must list the same six
+ * (008-component-library.md, Section 12) — it must list the same
  * sections, in the same order, as the actual `id` attributes below. Each
  * id lives on the section's own heading (or Hero's role line), not the
  * outer `<section>` wrapper, so Section Index's markers align with each
@@ -31,18 +38,11 @@ import { SectionIndex } from "@/components/section-index/SectionIndex";
  *
  * Placeholder content: no real content exists yet (Phase 3). The example
  * data below is the same representative content used throughout this
- * project's component verification (recruiter-platform case study,
- * cache-rollback postmortem), kept for traceability — this page validates
- * composition, it is not published as real claims.
+ * project's component verification (recruiter-platform case study),
+ * kept for traceability — this page validates composition, it is not
+ * published as real claims.
  */
-const SECTION_IDS = [
-  "hero",
-  "highlights",
-  "experience",
-  "case-studies",
-  "journal",
-  "contact",
-];
+const SECTION_IDS = ["hero", "highlights", "experience", "contact"];
 
 export default function Home() {
   return (
@@ -137,65 +137,6 @@ export default function Home() {
               dates="2021—Present"
             />
           </div>
-        </section>
-
-        <section className="pb-20 lg:pb-28">
-          <SectionHeading
-            id="case-studies"
-            title="Case Studies"
-            viewAllHref="/case-studies"
-            viewAllLabel="View all case studies"
-            divider
-          />
-          <ul className="mt-8 grid gap-8 sm:grid-cols-2">
-            <li>
-              <CaseStudyPreview
-                title="Recruiter Platform Architecture"
-                summary="Reduced P95 latency by 52% through a service topology migration."
-                href="/case-studies/recruiter-platform"
-              />
-            </li>
-            <li>
-              <CaseStudyPreview
-                title="SEO Migration"
-                summary="Restructured URL architecture without losing organic search visibility."
-                href="/case-studies/seo-migration"
-              />
-            </li>
-          </ul>
-          <div className="mt-8">
-            <CallToAction
-              label="View Case Studies"
-              href="/case-studies"
-              weight="primary"
-            />
-          </div>
-        </section>
-
-        <section className="pb-20 lg:pb-28">
-          <SectionHeading
-            id="journal"
-            title="Journal"
-            viewAllHref="/journal"
-            viewAllLabel="View all journal entries"
-            divider
-          />
-          <ul className="mt-8 grid gap-8 sm:grid-cols-2">
-            <li>
-              <JournalPreview
-                title="Why we rolled back the cache layer"
-                category="Postmortems"
-                href="/journal/cache-rollback"
-              />
-            </li>
-            <li>
-              <JournalPreview
-                title="Choosing Server Components over a client-rendered app shell"
-                category="Engineering Decisions"
-                href="/journal/server-components-decision"
-              />
-            </li>
-          </ul>
         </section>
 
         <section className="pb-20 lg:pb-28">

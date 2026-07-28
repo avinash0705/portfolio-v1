@@ -182,6 +182,12 @@ Not yet built: the Section Index component itself, the hero capability panel, an
 - **Flagged, not implemented — Case Study category labels**: the reference also showed a small category label ("ARCHITECTURE," "SEO") above each Case Study Preview's title. Checked `008` Section 5 and `015-case-studies.md` directly — neither defines any category/tag taxonomy for case studies (unlike Journal, which has a real, closed five-value category set already implemented). Adding this would mean inventing a new content taxonomy with no specification backing, not implementing something already decided.
 - **Verified**: format/typecheck/lint/build clean; real production build confirmed the Highlights divider and all three bullet dots present, and the Experience row's title/company/dates now render as a two-ended flex row rather than one inline sentence.
 
+**Case Studies and Journal homepage sections deferred — a sequencing decision, not a scope cut.** Explicit direction: hide both until those pages themselves exist, rather than shipping teaser sections whose links go nowhere real yet.
+
+- **`app/page.tsx`**: both `<section>` blocks removed from this page's composition; `SECTION_IDS` shortened to `["hero", "highlights", "experience", "contact"]` so `SectionIndex` never waits on a `getBoundingClientRect()` for an id that no longer exists (a missing id would have silently kept the whole rail unpopulated forever, since `bounds` only ever gets set once every id resolves). `CaseStudyPreview` and `JournalPreview` imports removed from this file only — both components remain fully built and verified in the library; this is a page-composition choice, not a component or specification change. `014-homepage.md` still specifies both sections; nothing there was touched.
+- **Deliberately not touched, scoped narrowly**: Hero's `quickLinks` still include Case Studies and Journal tiles, and the Case Studies section's own primary CTA doesn't exist anywhere to remove (it lived inside the now-deleted section). Only the two named homepage teaser sections were in scope for this request — Hero's own composition wasn't mentioned and stays as it is.
+- **Verified**: format/typecheck/lint/build clean; real production build confirmed exactly three `<h2>` headings remain (Highlights, Experience, Contact, in order), no Case Studies/Journal section headings exist anymore, and Hero's quick-link tiles (a `<span>`, not a heading) are unaffected.
+
 ---
 
 ## Specification Coverage Review (run after Component Library Complete, before Track B)
