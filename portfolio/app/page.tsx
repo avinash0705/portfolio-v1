@@ -89,22 +89,34 @@ export default function Home() {
               008's amended Section 3 licenses the link only where a real
               destination already exists. */}
           <SectionHeading id="highlights" title="Highlights" divider />
-          <ul className="mt-8 grid gap-8 sm:grid-cols-3">
-            <li>
+          <ul className="mt-8 grid gap-8 sm:grid-cols-3 sm:divide-x sm:divide-border">
+            <li className="flex gap-3 sm:pl-0 sm:[&:not(:first-child)]:pl-8">
+              <span
+                aria-hidden="true"
+                className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-muted"
+              />
               <Highlight
                 claim="Led frontend architecture for a recruiter platform migration"
                 href="/case-studies/recruiter-platform"
                 linkLabel="Read the case study on the recruiter platform migration"
               />
             </li>
-            <li>
+            <li className="flex gap-3 sm:pl-0 sm:[&:not(:first-child)]:pl-8">
+              <span
+                aria-hidden="true"
+                className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-muted"
+              />
               <Highlight
                 claim="Reduced P95 API latency by 52% through a service topology migration"
                 href="/case-studies/recruiter-platform"
                 linkLabel="Read the case study on the latency reduction"
               />
             </li>
-            <li>
+            <li className="flex gap-3 sm:pl-0 sm:[&:not(:first-child)]:pl-8">
+              <span
+                aria-hidden="true"
+                className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-muted"
+              />
               <Highlight claim="Mentored three engineers into senior roles" />
             </li>
           </ul>
