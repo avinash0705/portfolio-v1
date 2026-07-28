@@ -14,18 +14,39 @@ type SkillsDiagramProps = {
 // edge on the right. Equal radius on both axes, evenly spaced by angle,
 // is what actually produces a clock-face layout with equal spacing
 // all the way around, not just within a left half and a right half.
-const VIEW_W = 520;
-const VIEW_H = 520;
+const VIEW_W = 660;
+const VIEW_H = 660;
 const CENTER_X = VIEW_W / 2;
 const CENTER_Y = VIEW_H / 2;
-const RADIUS_X = 150;
-const RADIUS_Y = 150;
-const CHIP_HALF_W = 62;
+const RADIUS_X = 210;
+const RADIUS_Y = 210;
+const CHIP_HALF_W = 54;
+const CENTER_SIZE = 96;
 
-// Chosen so that (radius + chip half-width) stays safely inside the
-// viewBox on every side — 260 ± (150 + 62) = 48..472, comfortably
-// within 0..520 — rather than discovering the margin was wrong from a
-// clipped screenshot again.
+// Two constraints in tension, both checked empirically (measured DOM
+// rects, not just hand math) rather than assumed: (1) radius + chip
+// half-width must leave real margin inside the viewBox, or the outer
+// chips clip past Hero's own overflow-hidden edge; (2) the radius must
+// be large enough relative to chip width that adjacent chips (36° apart
+// around 10 of them) don't overlap each other — a smaller radius that
+// satisfies (1) can still fail (2). Hero's own grid ratio
+// (`lg:grid-cols-[1fr_1.15fr]`, widened twice now from the original
+// 1.3fr favouring the left column) gives this component
+// more real width to work with, rather than only shrinking the diagram
+// to fit an unnecessarily narrow column. This margin math only holds if
+// chip size and the centre node scale WITH the container, not as fixed
+// pixels — a real
+// screenshot showed both "Architecture" clipped on the right and
+// "React" overlapping the centre label on the left, because this
+// component's actual rendered width (inside Hero's `1fr` grid column)
+// is narrower than the 520 "logical" units above, and a fixed-pixel
+// chip/centre size doesn't shrink to match a smaller container the way
+// percentage-based position and the SVG's own viewBox already do. Both
+// are expressed as percentages of the container below for exactly this
+// reason — the whole diagram now scales as one consistent system
+// regardless of the column's real width, rather than two systems
+// (percentage position, fixed size) that only agree at one specific
+// width.
 
 // Reveal choreography (028-interaction-language.md, Section 13's
 // exception for this component): each connector draws in, then its chip
@@ -141,8 +162,8 @@ export function SkillsDiagram({ className }: SkillsDiagramProps) {
         style={{
           left: `${(CENTER_X / VIEW_W) * 100}%`,
           top: `${(CENTER_Y / VIEW_H) * 100}%`,
-          width: 96,
-          height: 96,
+          width: `${(CENTER_SIZE / VIEW_W) * 100}%`,
+          height: `${(CENTER_SIZE / VIEW_H) * 100}%`,
           transform: "translate(-50%, -50%)",
         }}
       >
@@ -163,7 +184,7 @@ export function SkillsDiagram({ className }: SkillsDiagramProps) {
             style={{
               left: `${(x / VIEW_W) * 100}%`,
               top: `${(y / VIEW_H) * 100}%`,
-              width: CHIP_HALF_W * 2,
+              width: `${((CHIP_HALF_W * 2) / VIEW_W) * 100}%`,
               transform: "translate(-50%, -50%)",
             }}
             initial={{
@@ -177,7 +198,7 @@ export function SkillsDiagram({ className }: SkillsDiagramProps) {
             }}
           >
             <Icon aria-hidden="true" className="h-4 w-4 shrink-0 text-accent" />
-            <span className="text-xs font-medium text-foreground">
+            <span className="min-w-0 flex-1 text-xs font-medium break-words text-foreground">
               {skill.label}
             </span>
           </motion.div>

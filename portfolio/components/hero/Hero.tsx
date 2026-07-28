@@ -66,7 +66,7 @@ export function Hero({
   return (
     <section className="relative overflow-hidden py-24 lg:py-32">
       <TechnicalMotif className="hidden lg:block" />
-      <div className="relative grid gap-12 lg:grid-cols-[1.3fr_1fr] lg:items-start lg:gap-16">
+      <div className="relative grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:items-start lg:gap-16">
         <div>
           <p id="hero" className="text-sm text-muted">
             {name}
