@@ -1,6 +1,6 @@
 # Component Library
 
-**Version:** 1.4
+**Version:** 1.5
 **Status:** Active
 
 ---
@@ -197,9 +197,9 @@ This is the single strongest defence against design-system sprawl available to a
 
 **Content ownership.** An action label and its destination only. It never contains explanatory prose beyond the label itself — the reasoning for the action belongs in the surrounding section, per `005-design-principles.md`'s whitespace and hierarchy rules.
 
-**Variants.** Primary and secondary, distinguished only by visual weight (`005-design-principles.md`, Section 2). Per `014-homepage.md`, Section 6, no page may present two primary-weighted CTAs at once — this rule belongs to the component, not just to the Homepage spec, and applies everywhere this component is used.
+**Variants.** Primary and secondary, distinguished by visual weight (`005-design-principles.md`, Section 2) expressed through `006-design-system.md`, Section 2's hand-drawn exception: both weights render an irregular, non-rectangular painted-stroke background — full opacity (growing further on hover) for primary, deliberately fainter (growing on hover but never reaching primary's strength) for secondary. Primary alone adds a bold, marker-style underline illustration beneath the label; secondary never does. Neither weight uses a border. Per `014-homepage.md`, Section 6, no page may present two primary-weighted CTAs at once — this rule belongs to the component, not just to the Homepage spec, and applies everywhere this component is used.
 
-**Accessibility expectations.** The accessible name states the actual action ("Download resume as PDF," not "Click here"); primary and secondary weighting must remain distinguishable without relying on colour alone.
+**Accessibility expectations.** The accessible name states the actual action ("Download resume as PDF," not "Click here"); primary and secondary weighting must remain distinguishable without relying on colour alone — the underline's presence/absence and the stroke's opacity difference are the non-colour signals that satisfy this. The painted-stroke background and underline are both decorative illustration layered behind or under real text, never a replacement for it, and are `aria-hidden`.
 
 **Reasons not to create a new variant.** A third "tertiary" weight is not justified anywhere in current page specs — introducing one would only be justified if a page genuinely needed three simultaneously competing actions, which would itself violate the one-primary-action rule this component enforces.
 
