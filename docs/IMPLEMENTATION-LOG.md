@@ -188,6 +188,12 @@ Not yet built: the Section Index component itself, the hero capability panel, an
 - **Deliberately not touched, scoped narrowly**: Hero's `quickLinks` still include Case Studies and Journal tiles, and the Case Studies section's own primary CTA doesn't exist anywhere to remove (it lived inside the now-deleted section). Only the two named homepage teaser sections were in scope for this request — Hero's own composition wasn't mentioned and stays as it is.
 - **Verified**: format/typecheck/lint/build clean; real production build confirmed exactly three `<h2>` headings remain (Highlights, Experience, Contact, in order), no Case Studies/Journal section headings exist anymore, and Hero's quick-link tiles (a `<span>`, not a heading) are unaffected.
 
+**Navigation's Case Studies and Journal items also deferred — caught immediately after the fact, not a separate decision.** The Homepage deferral above deliberately left Navigation untouched, reasoning it was out of scope for that request; pointed out directly that persistent, sitewide navigation linking to two non-existent pages is the same dead-end problem, just at a different layer.
+
+- **`lib/nav-items.ts`**: the two entries are commented out in place (not deleted), matching how the request was phrased — `008-component-library.md`, Section 1 says "exactly six items," so this is logged explicitly as a deliberate, temporary deviation from that rule, the same category as the Homepage sections above, not a change to `003-information-architecture.md`'s six-item architecture itself.
+- **Still open, not yet resolved**: Hero's `quickLinks` still include Case Studies and Journal tiles, pointing at the same two not-yet-built pages — flagged again, not yet acted on, since it's the same category of gap as Navigation's just was.
+- **Verified**: format/typecheck/lint/build clean; real production build confirmed the nav now renders exactly four items — Home, Experience, Resume, Contact — in order.
+
 ---
 
 ## Specification Coverage Review (run after Component Library Complete, before Track B)
