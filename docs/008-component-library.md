@@ -1,6 +1,6 @@
 # Component Library
 
-**Version:** 1.6
+**Version:** 1.7
 **Status:** Active
 
 ---
@@ -67,11 +67,11 @@ This is the single strongest defence against design-system sprawl available to a
 
 **Where it's used.** Homepage only. Granted the narrow exception (see Guardrail Principle) because Homepage's entire one-job is inseparable from this pattern — every other homepage section exists to build on what Hero establishes.
 
-**Content ownership.** Name, current role/level, a single positioning sentence, optionally one supporting sentence directly beneath it, the primary/secondary CTA (`014-homepage.md`, Sections 4–5), and optionally a small, fixed quick-links panel — up to four icon-and-label tiles, each linking to a real, already-documented destination in `003-information-architecture.md`, never an invented one. The optional supporting sentence may only restate or extend the positioning statement's own claim in one line — it may never introduce a new claim the positioning statement doesn't already make, and it is capped at one sentence, the same way the positioning statement itself is. The quick-links panel is a secondary, lightweight navigation aid, not a second CTA hierarchy — it must stay visually subordinate to the primary/secondary CTA above it, so that a Contact tile among them never competes with Case Studies for the visitor's first action (`014-homepage.md`, Sections 4 and 6). It never contains a biography, a list of technologies, or narrative prose — that content is explicitly excluded from the homepage entirely.
+**Content ownership.** Name, current role/level, a single positioning sentence, optionally one supporting sentence directly beneath it, the primary/secondary CTA (`014-homepage.md`, Sections 4–5), and a Skills visualization — a fixed set of named technologies/domains, each rendered as a labelled node connected back to a single centre point. This is `000-philosophy.md`, Section 1's one narrow, explicit exception to Evidence Over Claims: individual skill nodes carry no per-item evidence citation, and are understood as a compact index of domains, not a proficiency claim — the real evidence stays in case studies and metrics elsewhere on the site. The Skills visualization replaces the quick-links panel this section previously specified; Hero owns exactly one right-side panel at a time, never both. The optional supporting sentence may only restate or extend the positioning statement's own claim in one line — it may never introduce a new claim the positioning statement doesn't already make, and it is capped at one sentence, the same way the positioning statement itself is. Hero never contains a biography or narrative prose — that content is still explicitly excluded from the homepage entirely; only the named-technologies exception above is licensed, and only in this one visualization.
 
 **Variants.** None. There is exactly one Hero, because there is exactly one Homepage.
 
-**Accessibility expectations.** The positioning statement must be conveyed as real text, not as an image or embedded graphic, so it is available to assistive technology and remains legible if custom fonts fail to load.
+**Accessibility expectations.** The positioning statement must be conveyed as real text, not as an image or embedded graphic, so it is available to assistive technology and remains legible if custom fonts fail to load. The Skills visualization's node labels are real text (not baked into an image), reachable and readable independent of whether any connector animation has finished — the same "canonical content is never gated behind an animation" standard `028-interaction-language.md`, Section 12 already applies to Metric / Evidence Block.
 
 **Reasons not to create a new variant.** There is no second page whose one-job matches Homepage's — a "mini-Hero" elsewhere (e.g. atop Resume) is actually Section Heading (Section 3) or Experience Summary (Section 7) wearing a different name, not a Hero variant.
 

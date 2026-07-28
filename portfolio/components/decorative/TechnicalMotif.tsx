@@ -6,17 +6,23 @@ type TechnicalMotifProps = {
 
 /**
  * 006-design-system.md, Section 10's technical-motif exception: an
- * abstract, non-figurative dotted grid background. No person, product,
- * metaphor, or scene — only the same geometric language already
- * licensed by Section 2 and Section 6.
+ * abstract, non-figurative background — a dotted grid, a few scattered
+ * crosshair marks, a construction circle outline, and a partial arc. No
+ * person, product, metaphor, or scene — only the same geometric
+ * language already licensed by Section 2 and Section 6.
  *
- * Deliberately dots only, not a compound illustration — the earlier
- * version also included concentric crosshair circles and an arc,
- * confirmed directly against a reference as reading too much like a
- * standalone illustration ("archery target") rather than quiet texture.
- * A distinct, smaller motif exists for behind the Hero's quick-links
- * grid specifically (`QuickLinksMotif.tsx`) — this component no longer
- * tries to cover that case too.
+ * Scattered, not centred — an earlier version placed concentric circles
+ * and a crosshair at one focal point, confirmed directly against a
+ * reference as reading too much like a standalone illustration ("archery
+ * target") rather than quiet texture. This version spreads the same
+ * category of marks (crosshairs, a circle, an arc) loosely across the
+ * canvas instead, at a lower opacity (~3%, down from 4%), so nothing
+ * reads as a single focal illustration.
+ *
+ * A separate, smaller motif (`QuickLinksMotif.tsx`) briefly existed for
+ * behind Hero's now-removed quick-links grid; this component absorbed
+ * its reasoning (crosshairs, lines) back into one composition once that
+ * grid was replaced by the Skills visualization (`SkillsDiagram.tsx`).
  *
  * A licensed visual-language decision, not a content component — it owns
  * no responsibility 008-component-library.md would need to track (no
@@ -37,7 +43,7 @@ export function TechnicalMotif({ className }: TechnicalMotifProps) {
       viewBox="0 0 400 400"
       preserveAspectRatio="xMidYMid slice"
       className={cn(
-        "pointer-events-none absolute inset-0 h-full w-full text-foreground opacity-[0.04]",
+        "pointer-events-none absolute inset-0 h-full w-full text-foreground opacity-[0.03]",
         className
       )}
     >
@@ -52,6 +58,13 @@ export function TechnicalMotif({ className }: TechnicalMotifProps) {
         </pattern>
       </defs>
       <rect width="400" height="400" fill="url(#technical-motif-grid)" />
+      <g stroke="currentColor" strokeWidth="1" fill="none">
+        <circle cx="60" cy="330" r="40" />
+        <path d="M 300 40 A 90 90 0 0 1 340 120" />
+        <path d="M60 60v18M51 69h18" />
+        <path d="M340 300v18M331 309h18" />
+        <path d="M190 20v18M181 29h18" />
+      </g>
     </svg>
   );
 }

@@ -1,6 +1,6 @@
 # Interaction Language
 
-**Version:** 1.3
+**Version:** 1.4
 **Status:** Active
 
 ---
@@ -128,6 +128,8 @@ This is one of this system's few deliberate delight moments (Section 17), earned
 
 Where multiple sibling elements enter together (e.g. several Highlights on the Homepage), a brief stagger between them (roughly 40–60ms apart) makes the reveal read as ordered rather than simultaneous — capped after four or five items, beyond which the remainder reveal together rather than extending the cascade further. This never delays readability or interactivity; it is purely an ordering cue applied to content that is already rendered and already real.
 
+**Exception for the Skills visualization** (Hero, `008-component-library.md`, Section 2): its connector-then-chip reveal is a different kind of staggered entrance than the general rule above, not a violation of it — each connector animates as a drawn path (0.8–1.2s, ease-in-out) and its chip appears only once that connector finishes, proceeding one skill at a time in a fixed order. This licenses a longer per-item duration and a higher item count than the 40–60ms/four-or-five-item ceiling above, scoped specifically to this one component — it does not license slower or larger staggers anywhere else on the site. It still runs once, on first view, and never re-triggers, per this section's general reasoning; it is a Reveal Timing pattern, not a fourth Section 17 Delight Moment (see that section's own cross-reference).
+
 ---
 
 ## 14. Theme Transition Philosophy
@@ -158,7 +160,7 @@ Delight is capped and earned, not sprinkled throughout. Three moments qualify, e
 2. A precise copy-to-clipboard confirmation (Section 19) — an icon swap and a brief accent-coloured flash, never a toast notification competing for attention.
 3. The theme toggle's icon (sun/moon) morphs smoothly between states rather than swapping flatly (Section 5), at Section 18's "fast" duration.
 
-No further delight moments are added without revisiting this document — the discipline of stopping at three is itself the point.
+No further delight moments are added without revisiting this document — the discipline of stopping at three is itself the point. The Skills visualization's connector-then-chip reveal (Hero, `008-component-library.md`, Section 2) is not a fourth entry here: it is a Reveal Timing pattern (Section 13's own exception), an ordering cue for content already real, the same category as Highlights' stagger — not a decorative flourish added for its own sake.
 
 ---
 
@@ -208,6 +210,8 @@ None of the following are used, regardless of how well they might be executed:
 - Celebratory animation (confetti or similar) for routine actions.
 - Skeleton loaders for waits under roughly 300–400ms.
 - Any looping or idle animation.
+
+**One narrow, explicit exception**: the Skills visualization's connectors (Hero, `008-component-library.md`, Section 2) carry a continuous, subtle travelling highlight after their initial reveal — a genuine, deliberate reversal of "any looping or idle animation" above, confirmed directly against a reference, not an oversight. It is scoped tightly: a single small, low-contrast coloured segment travelling along an otherwise-static grey line, never glowing, never neon, never applied to any other element on the site. This does not reopen looping/idle animation as a general option — every other component, on every other page, still follows the rule above exactly as written.
 
 ---
 

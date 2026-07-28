@@ -1,6 +1,6 @@
 # Portfolio Philosophy
 
-**Version:** 1.0  
+**Version:** 1.1  
 **Status:** Active
 
 ---
@@ -21,7 +21,7 @@ If a future decision conflicts with this document, this document takes precedenc
 
 Build a portfolio that demonstrates engineering maturity through evidence, clarity, and craftsmanship.
 
-The portfolio should communicate how problems are solved, not simply what technologies are used.
+The portfolio should communicate how problems are solved, not simply what technologies are used (Section 1 below carries one narrow, explicit exception to this for Hero's Skills visualization).
 
 It should represent the standards expected from a senior engineer building production software.
 
@@ -54,6 +54,8 @@ Every important statement should be supported by one or more of the following:
 - Measurable business impact
 
 The portfolio should show work rather than describe abilities.
+
+**One narrow, explicit exception**: Hero's Skills visualization (`008-component-library.md`, Section 2) names specific technologies and domains — React, Accessibility, System Design, and similar — without an individual evidence citation next to each one. This is a conscious, deliberate departure from this principle, confirmed directly against a reference, not an oversight. It is treated as a compact index of the domains this engineer works in, not as a standalone claim of proficiency in each one — the actual evidence for proficiency still lives entirely in case studies, production metrics, and the rest of the site, exactly as this principle requires. The exception is scoped narrowly to this one visual element: it does not license unsupported technology or skill claims anywhere else on the site, and every other page and component still must satisfy Evidence Over Claims exactly as written above.
 
 ---
 
