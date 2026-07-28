@@ -1,6 +1,6 @@
 # Design System Philosophy
 
-**Version:** 1.5
+**Version:** 1.6
 **Status:** Active
 
 ---
@@ -33,7 +33,9 @@ The interface is built from **flat surfaces, strict alignment, and generous nega
 
 Nothing in the interface should look hand-crafted or bespoke per-screen. The same handful of surface treatments, used consistently, should be recognizable across every page — this is what makes the system feel engineered rather than designed page-by-page.
 
-**One narrow, explicit exception**: Call to Action (`008-component-library.md`, Section 10) uses a deliberately hand-drawn, illustrative treatment — an irregular, non-rectangular painted-stroke background and, on the primary weight only, a bold marker-style underline beneath the label. This is a conscious brand-personality decision for this one component specifically, confirmed directly against a reference, not a reopening of "not hand-crafted" for the interface generally. It stays scoped to Call to Action alone: no other button, control, or surface in the system adopts this illustrative language, and this exception must not be read as licensing hand-drawn treatment elsewhere without its own explicit decision.
+**One narrow, explicit exception**: Call to Action (`008-component-library.md`, Section 10) adds a bold, hand-drawn marker-style underline beneath the primary weight's label only. This is a conscious brand-personality decision for this one component specifically, confirmed directly against a reference, not a reopening of "not hand-crafted" for the interface generally. It stays scoped to Call to Action alone: no other button, control, or surface in the system adopts this illustrative language, and this exception must not be read as licensing hand-drawn treatment elsewhere without its own explicit decision.
+
+An earlier version of this exception also gave Call to Action an irregular, non-rectangular painted-stroke background in place of its normal solid fill. Reverted after a direct comparison against a reference showed a conventional solid rounded-rectangle button reads more clearly as a button — the hand-drawn touch that survives is the underline alone; the background is flat and rectangular again, per this document's general Visual Language rules, not a second illustrative element.
 
 **Containers are the exception, not the default.** Information is organised by rhythm, alignment, and typography before borders, backgrounds, or shadows are introduced. A card, a bordered box, or a coloured background wrapped around a passive block of content must justify its existence the same way a component must (`005-design-principles.md`, Principle 8) — most content doesn't need one. The default question for any section is not "what should its container look like?" but "does it need a container at all?" This is what separates an editorial layout from a dashboard: a case study, a set of highlights, or a metric should read as part of one continuous, carefully typeset document, not as a grid of interchangeable cards.
 
